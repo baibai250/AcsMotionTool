@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>AcsMotionTool.Core</AssemblyName>
+    <RootNamespace>AcsMotionTool.Core</RootNamespace>
+    <Description>ACS(SPiiPlus .NET)运动控制器通讯与控制核心库</Description>
+  </PropertyGroup>
+
+</Project>

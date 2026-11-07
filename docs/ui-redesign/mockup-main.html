@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>ACS 运动控制调试工具 · 界面方案预览</title>
+<style>
+  /* ============ 设计 token（与 WPF 资源字典一一对应） ============ */
+  :root{
+    --bg:#F3F5F9;
+    --surface:#FFFFFF;
+    --surface-2:#F8FAFC;
+    --surface-3:#EEF2F7;
+    --border:#E4E8EF;
+    --border-strong:#D3DAE4;
+    --text:#121A26;
+    --text-2:#57657A;
+    --text-3:#8B97A8;
+    --brand:#1B6AC9;
+    --brand-dark:#1557A8;
+    --brand-soft:#EAF2FD;
+    --ok:#0F7B3D;
+    --ok-soft:#E6F4EB;
+    --warn:#A85B00;
+    --warn-soft:#FDF1E0;
+    --danger:#D0342C;
+    --danger-soft:#FCEAE8;
+    --info:#0A6A9E;
+    --info-soft:#E7F2F9;
+    --r-s:6px; --r-m:10px; --r-l:14px;
+    --sh-1:0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.04);
+    --sh-2:0 10px 24px rgba(16,24,40,.09);
+    --font:"Microsoft YaHei UI","Segoe UI",system-ui,sans-serif;
+    --mono:"Cascadia Mono",Consolas,"Courier New",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:var(--font);font-size:13px;color:var(--text);
+    background:var(--bg);-webkit-font-smoothing:antialiased;
+  }
+  svg{display:block}
+  .app{display:grid;grid-template-rows:58px 1fr 26px;grid-template-columns:210px 1fr;height:100vh}
+
+  /* ================= 顶栏 ================= */
+  .topbar{
+    grid-column:1/-1;display:flex;align-items:center;gap:14px;
+    background:var(--surface);border-bottom:1px solid var(--border);padding:0 18px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;min-width:194px}
+  .brand-mark{
+    width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(150deg,#2A7BE0,#1557A8);color:#fff;
+    box-shadow:0 2px 6px rgba(27,106,201,.35);
+  }
+  .brand-name{font-size:14px;font-weight:600;letter-spacing:.2px}
+  .brand-sub{font-size:11px;color:var(--text-3);margin-top:1px}
+  .topbar-sep{width:1px;height:22px;background:var(--border);margin:0 2px}
+  .pills{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;
+    border:1px solid var(--border);border-radius:999px;background:var(--surface-2);
+    color:var(--text-2);font-size:12px;white-space:nowrap;
+  }
+  .pill b{color:var(--text);font-weight:600}
+  .pill.ok{background:var(--ok-soft);border-color:#C8E6D3;color:#0D6A35}
+  .pill.ok b{color:#0D6A35}
+  .pill.muted{color:var(--text-3)}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+  .dot.live{box-shadow:0 0 0 3px rgba(15,123,61,.16)}
+  .actions{display:flex;align-items:center;gap:8px}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    height:32px;padding:0 12px;border-radius:var(--r-s);border:1px solid var(--border-strong);
+    background:var(--surface);color:var(--text);font:inherit;font-size:12.5px;cursor:pointer;
+    transition:background .12s,border-color .12s,box-shadow .12s;
+  }
+  .btn:hover{background:var(--surface-2);border-color:#C2CBD8}
+  .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+  .btn.primary:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
+  .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff;font-weight:600}
+  .btn.danger:hover{background:#B92A23}
+  .btn.ghost{border-color:transparent;background:transparent;color:var(--text-2)}
+  .btn.ghost:hover{background:var(--surface-3);color:var(--text)}
+  .btn.sm{height:28px;font-size:12px;padding:0 10px}
+  .estop{gap:8px;height:34px;padding:0 14px;letter-spacing:.3px}
+
+  /* ================= 左侧导航 ================= */
+  .nav{
+    background:var(--surface);border-right:1px solid var(--border);
+    display:flex;flex-direction:column;padding:12px 10px;gap:2px;
+  }
+  .nav-label{font-size:11px;color:var(--text-3);padding:6px 10px 4px;letter-spacing:.4px}
+  .nav-item{
+    display:flex;align-items:center;gap:10px;height:38px;padding:0 10px;
+    border-radius:8px;color:var(--text-2);cursor:pointer;position:relative;font-size:13px;
+  }
+  .nav-item:hover{background:var(--surface-2);color:var(--text)}
+  .nav-item.active{background:var(--brand-soft);color:var(--brand-dark);font-weight:600}
+  .nav-item.active::before{
+    content:"";position:absolute;left:-10px;top:8px;bottom:8px;width:3px;
+    border-radius:0 3px 3px 0;background:var(--brand);
+  }
+  .nav-item .ico{color:currentColor;opacity:.9}
+  .nav-item .badge{
+    margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:9px;
+    background:var(--danger-soft);color:var(--danger);font-size:11px;font-weight:600;
+    display:grid;place-items:center;
+  }
+  .nav-foot{margin-top:auto;border-top:1px solid var(--border);padding-top:10px}
+  .nav-user{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px}
+  .nav-user:hover{background:var(--surface-2)}
+  .avatar{width:26px;height:26px;border-radius:50%;background:var(--surface-3);display:grid;place-items:center;color:var(--text-2);font-size:11px;font-weight:600}
+
+  /* ================= 内容区 ================= */
+  .main{padding:18px 20px 14px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+  .page-head{display:flex;align-items:flex-end;gap:12px}
+  .page-title{font-size:20px;font-weight:600;letter-spacing:.2px}
+  .page-sub{font-size:12px;color:var(--text-3);padding-bottom:2px}
+  .page-head .spacer{flex:1}
+  .seg{display:inline-flex;background:var(--surface-3);border-radius:8px;padding:2px;gap:2px}
+  .seg span{
+    display:inline-flex;align-items:center;height:26px;padding:0 12px;border-radius:6px;
+    font-size:12px;color:var(--text-2);cursor:pointer;
+  }
+  .seg span.on{background:var(--surface);color:var(--text);font-weight:600;box-shadow:var(--sh-1)}
+
+  /* ============ 轴卡片 ============ */
+  .axes{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .axis-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--r-m);
+    padding:12px 14px 11px;box-shadow:var(--sh-1);position:relative;cursor:pointer;
+    transition:border-color .12s,box-shadow .12s,transform .12s;
+  }
+  .axis-card:hover{border-color:#C9D4E3;box-shadow:0 4px 12px rgba(16,24,40,.07)}
+  .axis-card.sel{border-color:var(--brand);box-shadow:0 0 0 3px rgba(27,106,201,.12),var(--sh-1)}
+  .axis-card.sel::after{
+    content:"";position:absolute;left:14px;right:14px;top:-1px;height:2px;
+    background:var(--brand);border-radius:0 0 2px 2px;
+  }
+  .ax-top{display:flex;align-items:center;gap:8px}
+  .ax-name{font-size:13px;font-weight:600}
+  .ax-idx{font-size:11px;color:var(--text-3);font-family:var(--mono)}
+  .ax-state{margin-left:auto;display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--text-3)}
+  .ax-pos{display:flex;align-items:baseline;gap:5px;margin:8px 0 2px}
+  .ax-pos .v{font-family:var(--mono);font-size:24px;font-weight:600;letter-spacing:-.4px;font-variant-numeric:tabular-nums}
+  .ax-pos .u{font-size:11px;color:var(--text-3)}
+  .ax-meta{display:flex;align-items:center;gap:6px;margin-top:7px;flex-wrap:wrap}
+  .limit-bar{position:relative;height:4px;border-radius:2px;background:var(--surface-3);margin-top:9px;overflow:hidden}
+  .limit-bar i{position:absolute;left:32%;width:26%;top:0;bottom:0;background:linear-gradient(90deg,#6FA8E8,#2A7BE0);border-radius:2px}
+  .limit-label{display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-3);margin-top:4px;font-family:var(--mono)}
+
+  /* ============ 通用卡片 ============ */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-m);box-shadow:var(--sh-1);display:flex;flex-direction:column;min-height:0}
+  .card-h{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--border)}
+  .card-h h3{margin:0;font-size:13px;font-weight:600}
+  .card-h .hint{font-size:11.5px;color:var(--text-3)}
+  .card-h .spacer{flex:1}
+  .card-b{padding:12px;display:flex;flex-direction:column;gap:10px;min-height:0}
+
+  .content{display:grid;grid-template-columns:minmax(0,1.62fr) minmax(0,1fr);gap:14px;flex:1;min-height:0}
+  .col{display:flex;flex-direction:column;gap:14px;min-height:0}
+
+  /* ============ 运动控制 ============ */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .kpi{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:9px 11px}
+  .kpi .k{font-size:11px;color:var(--text-3)}
+  .kpi .v{font-family:var(--mono);font-size:18px;font-weight:600;margin-top:3px;font-variant-numeric:tabular-nums;letter-spacing:-.2px}
+  .kpi .v small{font-size:10.5px;color:var(--text-3);font-weight:400;margin-left:3px;letter-spacing:0}
+  .kpi.moving .v{color:var(--brand)}
+
+  .divider{height:1px;background:var(--border);margin:1px 0}
+  .field-row{display:grid;grid-template-columns:1.15fr .55fr .55fr .55fr auto;gap:10px;align-items:end}
+  .field{display:flex;flex-direction:column;gap:4px;min-width:0}
+  .field label{font-size:11px;color:var(--text-3)}
+  .input{
+    height:32px;border:1px solid var(--border-strong);border-radius:var(--r-s);background:var(--surface);
+    padding:0 9px;font-family:var(--mono);font-size:13px;color:var(--text);display:flex;align-items:center;
+    font-variant-numeric:tabular-nums;
+  }
+  .input.sel{border-color:var(--brand);box-shadow:0 0 0 3px rgba(27,106,201,.13)}
+  .input .unit{color:var(--text-3);font-size:11px;margin-left:auto}
+  .input .caret{color:var(--text-3);font-size:11px;margin-left:8px}
+  .jog{display:flex;align-items:center;gap:10px}
+  .jog-btn{
+    width:46px;height:38px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface);
+    display:grid;place-items:center;color:var(--text);cursor:pointer;
+  }
+  .jog-btn:hover{background:var(--surface-2);border-color:#C2CBD8}
+  .jog-btn.stop{color:var(--danger);border-color:#EFC9C5;background:#FFF9F8}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;
+    font-size:11.5px;border:1px solid transparent;white-space:nowrap;
+  }
+  .chip .dot{width:6px;height:6px}
+  .chip.ok{background:var(--ok-soft);color:var(--ok);border-color:#CDE8D8}
+  .chip.warn{background:var(--warn-soft);color:var(--warn);border-color:#F2DDBC}
+  .chip.danger{background:var(--danger-soft);color:var(--danger);border-color:#F3CEC9}
+  .chip.info{background:var(--info-soft);color:var(--info);border-color:#CDE3F0}
+  .chip.neutral{background:var(--surface-2);color:var(--text-2);border-color:var(--border)}
+  .chip.moving{background:var(--brand-soft);color:var(--brand-dark);border-color:#CFE0F8}
+
+  /* ============ 轴表 ============ */
+  .table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px}
+  .table th{
+    text-align:left;font-weight:500;color:var(--text-3);font-size:11px;letter-spacing:.3px;
+    padding:8px 10px;background:var(--surface-2);border-bottom:1px solid var(--border);white-space:nowrap;
+  }
+  .table td{padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;color:var(--text)}
+  .table tr:last-child td{border-bottom:none}
+  .table tr.row-sel td{background:var(--brand-soft)}
+  .table tr.row-alarm td{background:#FEF7F6}
+  .table .num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+  .table .muted{color:var(--text-3)}
+  .table .name{font-weight:600}
+  .cell-state{display:inline-flex;align-items:center;gap:5px;font-size:12px}
+  .cell-state .dot{width:6px;height:6px}
+  .tbl-wrap{overflow:auto;min-height:0}
+  .tbl-foot{display:flex;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid var(--border);color:var(--text-3);font-size:11.5px}
+
+  /* ============ 右侧操作卡片 ============ */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .grid2 .btn{height:32px}
+  .stack{display:flex;flex-direction:column;gap:8px}
+  .row{display:flex;align-items:center;gap:8px}
+  .row .btn{flex:1}
+  .note{font-size:11.5px;color:var(--text-3);line-height:1.55}
+  .note.warn{color:var(--warn)}
+  .accordion{display:flex;align-items:center;gap:8px;padding:11px 14px;border-top:1px solid var(--border);color:var(--text-2);font-size:12.5px;cursor:pointer}
+  .accordion:hover{background:var(--surface-2)}
+  .accordion .chev{margin-left:auto;color:var(--text-3)}
+
+  /* ============ 底栏 ============ */
+  .statusbar{
+    grid-column:1/-1;height:26px;display:flex;align-items:center;gap:14px;padding:0 16px;
+    background:var(--surface);border-top:1px solid var(--border);color:var(--text-3);font-size:11.5px;
+  }
+  .statusbar .ok{color:var(--ok)}
+  .statusbar .right{margin-left:auto;display:flex;gap:14px}
+
+  /* 小屏适配（1366×768 现场笔记本） */
+  @media (max-height:820px){
+    .main{padding:12px 14px;gap:10px}
+    .axes{gap:8px}
+    .axis-card{padding:9px 11px}
+    .ax-pos .v{font-size:20px}
+    .card-b{padding:10px;gap:9px}
+    .content{gap:10px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ================= 顶栏 ================= -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 17l4-10 4 10"/><path d="M4.5 13.5h5"/><path d="M14 17V7h3.5a3 3 0 0 1 0 6H14"/><path d="M14 13h4a3 3 0 0 1 0 4h-4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">ACS 运动控制调试工具</div>
+        <div class="brand-sub">SPiiPlus · .NET 8</div>
+      </div>
+    </div>
+
+    <div class="topbar-sep"></div>
+
+    <div class="pills">
+      <span class="pill ok"><span class="dot live"></span><b>已连接</b> · SPiiPlus 模拟器</span>
+      <span class="pill">固件 <b>4.00</b></span>
+      <span class="pill">轴数 <b>4</b></span>
+      <span class="pill"><span class="dot" style="color:var(--info)"></span>MySQL <b>acs_motion</b></span>
+      <span class="pill muted">轮询 12 ms</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn ghost sm" title="刷新全部状态">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
+        刷新
+      </button>
+      <button class="btn danger estop">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19L12 3z"/><path d="M12 9v5"/><path d="M12 17.5v.01"/></svg>
+        全部急停
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= 左侧导航 ================= -->
+  <nav class="nav">
+    <div class="nav-label">调试</div>
+    <div class="nav-item active">
+      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="#fff"/><circle cx="15" cy="12" r="2" fill="#fff"/><circle cx="8" cy="18" r="2" fill="#fff"/></svg>
+      轴控制
+    </div>
+    <div class="nav-item">
+      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 17.5h.01"/></svg>
+      IO
+    </div>
+    <div class="nav-item">
+      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m8 8-4 4 4 4"/><path d="m16 8 4 4-4 4"/><path d="m13 6-2 12"/></svg>
+      变量
+    </div>
+    <div class="nav-item">
+      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 2.5 3L7 15"/><path d="M12.5 15H17"/></svg>
+      命令终端
+    </div>
+    <div class="nav-item">
+      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/></svg>
+      程序缓冲区
+    </div>
+
+    <div class="nav-label" style="margin-top:8px">诊断</div>
+    <div class="nav-item">
+      <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      日志
+      <span class="badge">3</span>
+    </div>
+
+    <div class="nav-foot">
+      <div class="nav-item">
+        <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 2.6 14H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.4a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 3.6h.09A1.7 1.7 0 0 0 10.4 2h3.2a1.7 1.7 0 0 0 1.3 1.6h.09a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 8v.09a1.7 1.7 0 0 0 1.6 1.31"/></svg>
+        连接与设置
+      </div>
+      <div class="nav-user">
+        <div class="avatar">AC</div>
+        <div style="line-height:1.25">
+          <div style="font-size:12px">本机会话</div>
+          <div style="font-size:11px;color:var(--text-3)">acs-settings.json</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================= 主内容 ================= -->
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div class="page-title">轴控制</div>
+        <div class="page-sub">正在监视 4 个轴 · 模拟器连接 · 轮询 200 ms · 上次更新 0.1 s 前</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="seg"><span class="on">卡片</span><span>表格</span></div>
+      <button class="btn sm">全部使能</button>
+      <button class="btn sm">全部停止</button>
+    </div>
+
+    <!-- 轴卡片 -->
+    <div class="axes">
+      <div class="axis-card sel">
+        <div class="ax-top"><span class="ax-name">X 轴</span><span class="ax-idx">#0</span>
+          <span class="ax-state"><span class="dot" style="color:var(--ok)"></span>已使能</span></div>
+        <div class="ax-pos"><span class="v">12.3456</span><span class="u">mm</span></div>
+        <div class="ax-meta">
+          <span class="chip ok"><span class="dot"></span>到位</span>
+          <span class="chip neutral">终止码 5003 正常</span>
+        </div>
+        <div class="limit-bar"><i></i></div>
+        <div class="limit-label"><span>-100.0000</span><span>+100.0000</span></div>
+      </div>
+
+      <div class="axis-card">
+        <div class="ax-top"><span class="ax-name">Y 轴</span><span class="ax-idx">#1</span>
+          <span class="ax-state" style="color:var(--brand)"><span class="dot" style="color:var(--brand)"></span>运动中</span></div>
+        <div class="ax-pos"><span class="v" style="color:var(--brand)">-48.0021</span><span class="u">mm</span></div>
+        <div class="ax-meta">
+          <span class="chip moving"><span class="dot"></span>运动中</span>
+          <span class="chip neutral">目标 -60.0000</span>
+        </div>
+        <div class="limit-bar"><i style="left:22%;width:18%;background:linear-gradient(90deg,#7FB2EC,#1B6AC9)"></i></div>
+        <div class="limit-label"><span>-100.0000</span><span>+100.0000</span></div>
+      </div>
+
+      <div class="axis-card">
+        <div class="ax-top"><span class="ax-name">Z 轴</span><span class="ax-idx">#2</span>
+          <span class="ax-state"><span class="dot" style="color:var(--text-3)"></span>未使能</span></div>
+        <div class="ax-pos"><span class="v" style="color:var(--text-3)">0.0000</span><span class="u">mm</span></div>
+        <div class="ax-meta">
+          <span class="chip neutral"><span class="dot"></span>断开</span>
+          <span class="chip neutral">无报警</span>
+        </div>
+        <div class="limit-bar" style="background:transparent;border-top:1px dashed var(--border-strong);height:5px;border-radius:0"></div>
+        <div class="limit-label" style="font-family:var(--font);font-size:10.5px"><span>未设置软限位 · 点击设置</span><span></span></div>
+      </div>
+
+      <div class="axis-card">
+        <div class="ax-top"><span class="ax-name">R 轴</span><span class="ax-idx">#3</span>
+          <span class="ax-state"><span class="dot" style="color:var(--ok)"></span>已使能</span></div>
+        <div class="ax-pos"><span class="v">90.0000</span><span class="u">°</span></div>
+        <div class="ax-meta">
+          <span class="chip ok"><span class="dot"></span>到位</span>
+          <span class="chip warn">+ 限位</span>
+        </div>
+        <div class="limit-bar"><i style="left:6%;width:88%"></i></div>
+        <div class="limit-label"><span>0.0000</span><span>180.0000</span></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- 左列 -->
+      <div class="col">
+        <section class="card">
+          <div class="card-h">
+            <h3>运动控制</h3>
+            <span class="hint">X 轴 · #0</span>
+            <div class="spacer"></div>
+            <span class="chip info">等待到位 已开启</span>
+          </div>
+          <div class="card-b">
+            <div class="kpis">
+              <div class="kpi"><div class="k">当前位置</div><div class="v">12.3456<small>mm</small></div></div>
+              <div class="kpi"><div class="k">命令位置</div><div class="v">12.3456<small>mm</small></div></div>
+              <div class="kpi"><div class="k">目标位置</div><div class="v">12.3456<small>mm</small></div></div>
+              <div class="kpi"><div class="k">当前速度</div><div class="v">0.0000<small>mm/s</small></div></div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="field-row">
+              <div class="field" style="flex-direction:row;align-items:center;gap:6px">
+                <div class="seg"><span class="on">绝对</span><span>相对</span></div>
+              </div>
+              <div class="field">
+                <label>目标位置</label>
+                <div class="input sel">12.3456<span class="unit">mm</span></div>
+              </div>
+              <div class="field">
+                <label>速度</label>
+                <div class="input">20.0000<span class="unit">mm/s</span></div>
+              </div>
+              <div class="field">
+                <label>加速度</label>
+                <div class="input">200.0<span class="unit">mm/s²</span></div>
+              </div>
+              <button class="btn primary" style="height:32px;padding:0 18px">执行运动</button>
+            </div>
+
+            <div class="jog">
+              <button class="jog-btn" title="负向点动">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+              </button>
+              <button class="jog-btn" title="正向点动">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <div class="field" style="width:110px">
+                <label>点动速度</label>
+                <div class="input">5.0000<span class="unit">mm/s</span></div>
+              </div>
+              <button class="jog-btn stop" title="停止">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
+              </button>
+              <div class="chips" style="margin-left:auto">
+                <span class="chip ok"><span class="dot"></span>使能</span>
+                <span class="chip ok"><span class="dot"></span>到位</span>
+                <span class="chip neutral">无报警</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" style="flex:1;min-height:0">
+          <div class="card-h">
+            <h3>全部轴状态</h3>
+            <span class="hint">4 轴 · 行内点击切换</span>
+            <div class="spacer"></div>
+            <button class="btn ghost sm">导出 CSV</button>
+          </div>
+          <div class="tbl-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>轴</th><th>名称</th><th class="num">位置</th><th class="num">命令位置</th><th class="num">目标</th>
+                  <th class="num">速度</th><th>使能</th><th>状态</th><th>限位</th><th>终止码</th><th>报警</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-sel">
+                  <td class="num muted">0</td><td class="name">X 轴</td>
+                  <td class="num">12.3456</td><td class="num">12.3456</td><td class="num">12.3456</td><td class="num">0.0000</td>
+                  <td><span class="cell-state" style="color:var(--ok)"><span class="dot"></span>使能</span></td>
+                  <td>到位</td><td class="muted">—</td><td class="muted">5003 正常</td><td class="muted">—</td>
+                </tr>
+                <tr>
+                  <td class="num muted">1</td><td class="name">Y 轴</td>
+                  <td class="num">-48.0021</td><td class="num">-47.9810</td><td class="num">-60.0000</td><td class="num">12.5000</td>
+                  <td><span class="cell-state" style="color:var(--ok)"><span class="dot"></span>使能</span></td>
+                  <td style="color:var(--brand);font-weight:600">运动</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td>
+                </tr>
+                <tr>
+                  <td class="num muted">2</td><td class="name">Z 轴</td>
+                  <td class="num muted">0.0000</td><td class="num muted">0.0000</td><td class="num muted">0.0000</td><td class="num muted">0.0000</td>
+                  <td><span class="cell-state" style="color:var(--text-3)"><span class="dot"></span>断开</span></td>
+                  <td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td>
+                </tr>
+                <tr>
+                  <td class="num muted">3</td><td class="name">R 轴</td>
+                  <td class="num">90.0000</td><td class="num">90.0000</td><td class="num">90.0000</td><td class="num">0.0000</td>
+                  <td><span class="cell-state" style="color:var(--ok)"><span class="dot"></span>使能</span></td>
+                  <td>到位</td><td style="color:var(--warn);font-weight:600">+限</td><td class="muted">—</td><td class="muted">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tbl-foot">
+            <span class="dot" style="color:var(--ok)"></span> 与轴卡片同源，随轮询实时刷新
+            <span style="margin-left:auto">双击行进入该轴操作</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- 右列 -->
+      <div class="col">
+        <section class="card">
+          <div class="card-h"><h3>伺服</h3><div class="spacer"></div><span class="chip ok"><span class="dot"></span>已使能</span></div>
+          <div class="card-b">
+            <div class="grid2">
+              <button class="btn primary">使能</button>
+              <button class="btn">下使能</button>
+              <button class="btn">清除故障</button>
+              <button class="btn">停止运动</button>
+            </div>
+            <div class="note">停止运动使用 STOP 减速度；急停在顶栏。</div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-h"><h3>回零</h3><div class="spacer"></div><span class="hint">缓冲区 #0</span></div>
+          <div class="card-b">
+            <div class="field">
+              <label>回零方式</label>
+              <div class="input">生成 HOME 指令并运行<span class="caret">▾</span></div>
+            </div>
+            <div class="row">
+              <button class="btn primary" style="flex:1">开始回零</button>
+              <button class="btn" style="flex:1">停止回零</button>
+            </div>
+            <div class="note warn">模拟器请选择「软件置零」。</div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-h"><h3>软限位</h3><div class="spacer"></div><span class="hint">MySQL · 01:02 已同步</span></div>
+          <div class="card-b">
+            <div class="row" style="gap:10px">
+              <div class="field" style="flex:1"><label>下限</label><div class="input">-100.0000</div></div>
+              <div class="field" style="flex:1"><label>上限</label><div class="input">+100.0000</div></div>
+            </div>
+            <div class="row">
+              <button class="btn" style="flex:1">应用</button>
+              <button class="btn" style="flex:1">保存到数据库</button>
+            </div>
+          </div>
+          <div class="accordion">
+            高级运动参数（速度 / Jerk / 加减速）
+            <span class="chev">▾</span>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= 状态栏 ================= -->
+  <footer class="statusbar">
+    <span class="ok">● 就绪</span>
+    <span>上次轮询 12 ms / 间隔 200 ms（第 18,204 次）</span>
+    <span>选中：X 轴 · #0</span>
+    <div class="right">
+      <span>ACS.SPiiPlusNET 4.0.0</span>
+      <span>.NET 8 · x64</span>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

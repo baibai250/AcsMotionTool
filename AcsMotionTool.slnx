@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/AcsMotionTool.App/AcsMotionTool.App.csproj" />
+    <Project Path="src/AcsMotionTool.Core/AcsMotionTool.Core.csproj" />
+    <Project Path="src/AcsMotionTool.Data/AcsMotionTool.Data.csproj" />
+  </Folder>
+</Solution>

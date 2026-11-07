@@ -1,0 +1,922 @@
+﻿# Assembly : ACS.SPiiPlusNET, Version=3.3.0.27979, Culture=neutral, PublicKeyToken=null
+# Location : E:\test\acs\lib\ACS.SPiiPlusNET.v3.3.0.dll
+# ImageRuntimeVersion : v2.0.50727
+# TargetFramework : 
+
+## Exported types (83)
+  struct ACS.SPiiPlusNET.ACSC_APPSL_ATTRIBUTE
+  enum  ACS.SPiiPlusNET.ACSC_APPSL_FILETYPE
+  struct ACS.SPiiPlusNET.ACSC_APPSL_INFO_NATIVE
+  struct ACS.SPiiPlusNET.ACSC_APPSL_SECTION
+  struct ACS.SPiiPlusNET.ACSC_APPSL_STRING
+  struct ACS.SPiiPlusNET.ACSC_CONNECTION_DESC
+  struct ACS.SPiiPlusNET.ACSC_CONNECTION_INFO
+  enum  ACS.SPiiPlusNET.ACSC_CONNECTION_TYPE
+  struct ACS.SPiiPlusNET.ACSC_CONTROLLER_INFO
+  class ACS.SPiiPlusNET.ACSC_INTR_CALLBACK_FUNC
+  class ACS.SPiiPlusNET.ACSC_INTR_CALLBACK_FUNC_EXT
+  enum  ACS.SPiiPlusNET.ACSC_LOG_DATA_PRESENTATION
+  enum  ACS.SPiiPlusNET.ACSC_LOG_DETALIZATION_LEVEL
+  struct ACS.SPiiPlusNET.ACSC_PCI_SLOT
+  enum  ACS.SPiiPlusNET.ACSC_RETURN_TYPE
+  class ACS.SPiiPlusNET.ACSC_USER_CALLBACK_FUNCTION
+  class ACS.SPiiPlusNET.ACSC_USER_CONDITION_FUNC
+  class ACS.SPiiPlusNET.ACSC_WAITBLOCK
+  class ACS.SPiiPlusNET.ACSException
+  class ACS.SPiiPlusNET.AcscControllerInfo
+  enum  ACS.SPiiPlusNET.AcsplVariableType
+  class ACS.SPiiPlusNET.Api
+  class ACS.SPiiPlusNET.Api+AxisEventHandler
+  class ACS.SPiiPlusNET.Api+BufferEventHandler
+  class ACS.SPiiPlusNET.Api+DefaultAxisEventHandler
+  class ACS.SPiiPlusNET.Api+InputEventHandler
+  class ACS.SPiiPlusNET.ApiMatlab
+  class ACS.SPiiPlusNET.ApiMatlab+AxisEventArgsEx
+  class ACS.SPiiPlusNET.ApiMatlab+AxisEventHandlerEx
+  class ACS.SPiiPlusNET.ApiMatlab+BufferEventArgsEx
+  class ACS.SPiiPlusNET.ApiMatlab+BufferEventHandlerEx
+  class ACS.SPiiPlusNET.ApiMatlab+DefaultAxisEventArgsEx
+  class ACS.SPiiPlusNET.ApiMatlab+DefaultAxisEventHandlerEx
+  class ACS.SPiiPlusNET.ApiMatlab+InputEventArgsEx
+  class ACS.SPiiPlusNET.ApiMatlab+InputEventHandlerEx
+  class ACS.SPiiPlusNET.ApplicationFileInfo
+  enum  ACS.SPiiPlusNET.Axis
+  enum  ACS.SPiiPlusNET.AxisMasks
+  enum  ACS.SPiiPlusNET.AxisStates
+  enum  ACS.SPiiPlusNET.BsegFlags
+  enum  ACS.SPiiPlusNET.BufferMasks
+  enum  ACS.SPiiPlusNET.ComLibDefine
+  enum  ACS.SPiiPlusNET.CommOptions
+  enum  ACS.SPiiPlusNET.ConfigKey
+  enum  ACS.SPiiPlusNET.CornerFlags
+  enum  ACS.SPiiPlusNET.DataCollectionFlags
+  enum  ACS.SPiiPlusNET.ErrorCodes
+  enum  ACS.SPiiPlusNET.EtherCatFlags
+  enum  ACS.SPiiPlusNET.EthernetCommOption
+  class ACS.SPiiPlusNET.FRD
+  class ACS.SPiiPlusNET.FRFInput
+  class ACS.SPiiPlusNET.FRFOutput
+  class ACS.SPiiPlusNET.FRFStabilityMargins
+  enum  ACS.SPiiPlusNET.FRF_CHIRP_TYPE
+  struct ACS.SPiiPlusNET.FRF_DURATION_CALCULATION_PARAMETERS
+  enum  ACS.SPiiPlusNET.FRF_EXCITATION_TYPE
+  enum  ACS.SPiiPlusNET.FRF_FREQUENCY_DISTRIBUTION_TYPE
+  enum  ACS.SPiiPlusNET.FRF_LOOP_TYPE
+  enum  ACS.SPiiPlusNET.FRF_OVERLAP
+  enum  ACS.SPiiPlusNET.FRF_WINDOW_TYPE
+  enum  ACS.SPiiPlusNET.GeneralDefinition
+  enum  ACS.SPiiPlusNET.GlobalDirection
+  enum  ACS.SPiiPlusNET.IndexStates
+  enum  ACS.SPiiPlusNET.InputMasks
+  enum  ACS.SPiiPlusNET.Interrupts
+  class ACS.SPiiPlusNET.JitterAnalysisInput
+  class ACS.SPiiPlusNET.JitterAnalysisOutput
+  enum  ACS.SPiiPlusNET.MotionFlags
+  enum  ACS.SPiiPlusNET.MotorStates
+  enum  ACS.SPiiPlusNET.OldAxis
+  enum  ACS.SPiiPlusNET.OldAxisMasks
+  class ACS.SPiiPlusNET.PInvoke
+  enum  ACS.SPiiPlusNET.ProgramBuffer
+  enum  ACS.SPiiPlusNET.ProgramStates
+  enum  ACS.SPiiPlusNET.RepresentationTypes
+  enum  ACS.SPiiPlusNET.RotationDirection
+  struct ACS.SPiiPlusNET.SERVO_PARAMETERS
+  enum  ACS.SPiiPlusNET.SafetyControlMasks
+  enum  ACS.SPiiPlusNET.SerialCommOption
+  class ACS.SPiiPlusNET.ServoParameters
+  enum  ACS.SPiiPlusNET.ServoProcessor
+  enum  ACS.SPiiPlusNET.SystemInfoKey
+  struct ACS.SPiiPlusNET.in_addr
+
+## Api methods
+  Void AddMPoint(Axis axis, String name)
+  ACSC_WAITBLOCK AddMPointAsync(Axis axis, String name)
+  Void AddMPointM(Axis[] axes, String name)
+  ACSC_WAITBLOCK AddMPointMAsync(Axis[] axes, String name)
+  Void AddPVPoint(Axis axis, Double point, Double velocity)
+  ACSC_WAITBLOCK AddPVPointAsync(Axis axis, Double point, Double velocity)
+  Void AddPVPointM(Axis[] axis, Double[] point, Double[] velocity)
+  ACSC_WAITBLOCK AddPVPointMAsync(Axis[] axis, Double[] point, Double[] velocity)
+  Void AddPVTPoint(Axis axis, Double point, Double velocity, Double timeInterval)
+  ACSC_WAITBLOCK AddPVTPointAsync(Axis axis, Double point, Double velocity, Double timeInterval)
+  Void AddPVTPointM(Axis[] axis, Double[] point, Double[] velocity, Double timeInterval)
+  ACSC_WAITBLOCK AddPVTPointMAsync(Axis[] axis, Double[] point, Double[] velocity, Double timeInterval)
+  Void AddPoint(Axis axis, Double point)
+  ACSC_WAITBLOCK AddPointAsync(Axis axis, Double point)
+  Void AddPointM(Axis[] axes, Double[] point)
+  ACSC_WAITBLOCK AddPointMAsync(Axis[] axes, Double[] point)
+  ApplicationFileInfo AnalyzeApplication(String fileName)
+  Void AppendBuffer(ProgramBuffer buffer, String text)
+  ACSC_WAITBLOCK AppendBufferAsync(ProgramBuffer buffer, String text)
+  Void Arc1(Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation)
+  ACSC_WAITBLOCK Arc1Async(Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation)
+  Void Arc2(Axis[] axes, Double[] center, Double angle)
+  ACSC_WAITBLOCK Arc2Async(Axis[] axes, Double[] center, Double angle)
+  Void AssignFastInputsNT(Axis axis, Int32 inputIndex, Int32 bitCode)
+  ACSC_WAITBLOCK AssignFastInputsNTAsync(Axis axis, Int32 inputIndex, Int32 bitCode)
+  Void AssignPegNT(Axis axis, Int32 engToEncBitCode, Int32 gpOutsBitCode)
+  ACSC_WAITBLOCK AssignPegNTAsync(Axis axis, Int32 engToEncBitCode, Int32 gpOutsBitCode)
+  Void AssignPegOutputsNT(Axis axis, Int32 outputIndex, Int32 bitCode)
+  ACSC_WAITBLOCK AssignPegOutputsNTAsync(Axis axis, Int32 outputIndex, Int32 bitCode)
+  Void BlendedArc1(MotionFlags flags, Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double segmentTime, Double accelerationTime, Double jerkTime, Double dwellTime)
+  ACSC_WAITBLOCK BlendedArc1Async(MotionFlags flags, Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double segmentTime, Double accelerationTime, Double jerkTime, Double dwellTime)
+  Void BlendedArc2(MotionFlags flags, Axis[] axes, Double[] center, Double angle, Double segmentTime, Double accelerationTime, Double jerkTime, Double dwellTime)
+  ACSC_WAITBLOCK BlendedArc2Async(MotionFlags flags, Axis[] axes, Double[] center, Double angle, Double segmentTime, Double accelerationTime, Double jerkTime, Double dwellTime)
+  Void BlendedLine(MotionFlags flags, Axis[] axes, Double[] point, Double segmentTime, Double accelerationTime, Double jerkTime, Double dwellTime)
+  ACSC_WAITBLOCK BlendedLineAsync(MotionFlags flags, Axis[] axes, Double[] point, Double segmentTime, Double accelerationTime, Double jerkTime, Double dwellTime)
+  Void BlendedSegmentMotion(MotionFlags flags, Axis[] axes, Double[] point, Double segmentTime, Double accelerationTime, Double jerkTime, Double dwellTime)
+  ACSC_WAITBLOCK BlendedSegmentMotionAsync(MotionFlags flags, Axis[] axes, Double[] point, Double segmentTime, Double accelerationTime, Double jerkTime, Double dwellTime)
+  Void Break(Axis axis)
+  ACSC_WAITBLOCK BreakAsync(Axis axis)
+  Void BreakM(Axis[] axes)
+  ACSC_WAITBLOCK BreakMAsync(Axis[] axes)
+  Void CalculateFFT(Double[] in, Double[] outReal, Double[] outImag)
+  Void CancelOperation(ACSC_WAITBLOCK wait)
+  Void CaptureComm()
+  Void ClearBreakpoints(ProgramBuffer buffer, Int32 line)
+  ACSC_WAITBLOCK ClearBreakpointsAsync(ProgramBuffer buffer, Int32 line)
+  Void ClearBuffer(ProgramBuffer buffer, Int32 fromLine, Int32 toLine)
+  ACSC_WAITBLOCK ClearBufferAsync(ProgramBuffer buffer, Int32 fromLine, Int32 toLine)
+  Void ClearVariables()
+  ACSC_WAITBLOCK ClearVariablesAsync()
+  Void CloseComm()
+  Void CloseHistoryBuffer()
+  Void CloseLogFile()
+  Void CloseMessageBuffer()
+  Void CloseSCLogFile()
+  Void CloseSimulator()
+  Void CollectB(DataCollectionFlags flags, String array, Int32 nSample, Int32 period, String vars)
+  ACSC_WAITBLOCK CollectBAsync(DataCollectionFlags flags, String array, Int32 nSample, Int32 period, String vars)
+  Void Command(String outBuf)
+  ACSC_WAITBLOCK CommandAsync(String outBuf)
+  Void Commut(Axis axis)
+  ACSC_WAITBLOCK CommutAsync(Axis axis)
+  Void CommutExt(Axis axis, Single current, Int32 settle, Int32 slope)
+  ACSC_WAITBLOCK CommutExtAsync(Axis axis, Single current, Int32 settle, Int32 slope)
+  Void CompileBuffer(ProgramBuffer buffer)
+  ACSC_WAITBLOCK CompileBufferAsync(ProgramBuffer buffer)
+  Void ControllerFactoryDefault(Int32 timeout)
+  Void ControllerReboot(Int32 timeout)
+  Void ControllerSaveToFlash(Axis[] parameters, ProgramBuffer[] buffers, ServoProcessor[] sPPrograms, String userArrays)
+  Void CopyFileToController(String sourceFileName, String destinationFileName)
+  ACSC_WAITBLOCK CopyFileToControllerAsync(String sourceFileName, String destinationFileName)
+  Void DataCollection(DataCollectionFlags flags, Axis axis, String array, Int32 nSample, Int32 period, String vars)
+  ACSC_WAITBLOCK DataCollectionAsync(DataCollectionFlags flags, Axis axis, String array, Int32 nSample, Int32 period, String vars)
+  Void DataCollectionExt(DataCollectionFlags flags, Axis axis, String array, Int32 nSample, Double period, String vars)
+  ACSC_WAITBLOCK DataCollectionExtAsync(DataCollectionFlags flags, Axis axis, String array, Int32 nSample, Double period, String vars)
+  Void DeclareVariable(AcsplVariableType type, String name)
+  ACSC_WAITBLOCK DeclareVariableAsync(AcsplVariableType type, String name)
+  Void DeleteFileFromController(String fileName)
+  ACSC_WAITBLOCK DeleteFileFromControllerAsync(String fileName)
+  Void Disable(Axis axis)
+  Void DisableAll()
+  ACSC_WAITBLOCK DisableAllAsync()
+  ACSC_WAITBLOCK DisableAsync(Axis axis)
+  Void DisableEvent(Interrupts flags)
+  Void DisableExt(Axis axis, Int32 reason)
+  ACSC_WAITBLOCK DisableExtAsync(Axis axis, Int32 reason)
+  Void DisableFault(Axis axis, SafetyControlMasks fault)
+  ACSC_WAITBLOCK DisableFaultAsync(Axis axis, SafetyControlMasks fault)
+  Void DisableM(Axis[] axes)
+  ACSC_WAITBLOCK DisableMAsync(Axis[] axes)
+  Void DisableResponse(Axis axis, SafetyControlMasks response)
+  ACSC_WAITBLOCK DisableResponseAsync(Axis axis, SafetyControlMasks response)
+  Void DownloadBuffer(ProgramBuffer buffer, String text)
+  ACSC_WAITBLOCK DownloadBufferAsync(ProgramBuffer buffer, String text)
+  Void DownloadFileOverEtherCAT(String path, String filename, Int32 slaveIndex)
+  ACSC_WAITBLOCK DownloadFileOverEtherCATAsync(String path, String filename, Int32 slaveIndex)
+  Void Enable(Axis axis)
+  ACSC_WAITBLOCK EnableAsync(Axis axis)
+  Void EnableEvent(Interrupts flags)
+  Void EnableFault(Axis axis, SafetyControlMasks fault)
+  ACSC_WAITBLOCK EnableFaultAsync(Axis axis, SafetyControlMasks fault)
+  Void EnableM(Axis[] axes)
+  ACSC_WAITBLOCK EnableMAsync(Axis[] axes)
+  Void EnableResponse(Axis axis, SafetyControlMasks response)
+  ACSC_WAITBLOCK EnableResponseAsync(Axis axis, SafetyControlMasks response)
+  Void EndSequence(Axis axis)
+  ACSC_WAITBLOCK EndSequenceAsync(Axis axis)
+  Void EndSequenceM(Axis[] axes)
+  ACSC_WAITBLOCK EndSequenceMAsync(Axis[] axes)
+  Void ExtAddPoint(Axis axis, Double point, Double rate)
+  ACSC_WAITBLOCK ExtAddPointAsync(Axis axis, Double point, Double rate)
+  Void ExtAddPointM(Axis[] axes, Double[] point, Double rate)
+  ACSC_WAITBLOCK ExtAddPointMAsync(Axis[] axes, Double[] point, Double rate)
+  Void ExtArc1(Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double velocity)
+  ACSC_WAITBLOCK ExtArc1Async(Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double velocity)
+  Void ExtArc2(Axis[] axes, Double[] center, Double angle, Double velocity)
+  ACSC_WAITBLOCK ExtArc2Async(Axis[] axes, Double[] center, Double angle, Double velocity)
+  Void ExtLine(Axis[] axes, Double[] point, Double velocity)
+  ACSC_WAITBLOCK ExtLineAsync(Axis[] axes, Double[] point, Double velocity)
+  Void ExtToPoint(MotionFlags flags, Axis axis, Double point, Double velocity, Double endVelocity)
+  ACSC_WAITBLOCK ExtToPointAsync(MotionFlags flags, Axis axis, Double point, Double velocity, Double endVelocity)
+  Void ExtToPointM(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity)
+  ACSC_WAITBLOCK ExtToPointMAsync(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity)
+  Void ExtendedSegmentArc1(MotionFlags flags, Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  ACSC_WAITBLOCK ExtendedSegmentArc1Async(MotionFlags flags, Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  Void ExtendedSegmentArc2(MotionFlags flags, Axis[] axes, Double[] center, Double angle, Double[] finalPoint, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  ACSC_WAITBLOCK ExtendedSegmentArc2Async(MotionFlags flags, Axis[] axes, Double[] center, Double angle, Double[] finalPoint, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  Void ExtendedSegmentedMotion(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity, Double junctionVelocity, Double angle, Double starvationMargin, String segments)
+  ACSC_WAITBLOCK ExtendedSegmentedMotionAsync(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity, Double junctionVelocity, Double angle, Double starvationMargin, String segments)
+  Void ExtendedSegmentedMotionExt(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity, Double junctionVelocity, Double angle, Double curveVelocity, Double deviation, Double radius, Double maxLength, Double starvationMargin, String segments)
+  ACSC_WAITBLOCK ExtendedSegmentedMotionExtAsync(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity, Double junctionVelocity, Double angle, Double curveVelocity, Double deviation, Double radius, Double maxLength, Double starvationMargin, String segments)
+  FRD FRFCalculateClosedLoopFRD(ServoParameters servoParameters, FRF_LOOP_TYPE loopType, FRD plant)
+  FRD FRFCalculateControllerFRD(ServoParameters servoParameters, FRF_LOOP_TYPE loopType, Double[] frequencyHz)
+  Double FRFCalculateDuration(FRF_DURATION_CALCULATION_PARAMETERS durationCalculationParameters)
+  FRD FRFCalculateOpenLoopFRD(ServoParameters servoParameters, FRF_LOOP_TYPE openType, FRD plant)
+  FRFStabilityMargins FRFCalculateStabilityMargins(FRD openLoop)
+  FRFOutput FRFMeasure(FRFInput input)
+  ServoParameters FRFReadServoParameters(Axis axis)
+  Void FRFStop(Axis axis)
+  Void FaultClear(Axis axis)
+  ACSC_WAITBLOCK FaultClearAsync(Axis axis)
+  Void FaultClearM(Axis[] axes)
+  ACSC_WAITBLOCK FaultClearMAsync(Axis[] axes)
+  Void FlushLogFile(String filename)
+  Void FlushSCLogFile(String filename, Boolean bClear)
+  Void FreeApplication(ApplicationFileInfo info)
+  Int32 GeneralCallbackAsyncFunction(UInt64 param, IntPtr cardContext)
+  IntPtr GetACSCHandle()
+  Double GetAcceleration(Axis axis)
+  ACSC_WAITBLOCK GetAccelerationAsync(Axis axis)
+  Int32 GetAnalogInput(Int32 port)
+  ACSC_WAITBLOCK GetAnalogInputAsync(Int32 port)
+  Double GetAnalogInputNT(Int32 port)
+  ACSC_WAITBLOCK GetAnalogInputNTAsync(Int32 port)
+  Int32 GetAnalogOutput(Int32 port)
+  ACSC_WAITBLOCK GetAnalogOutputAsync(Int32 port)
+  Double GetAnalogOutputNT(Int32 port)
+  ACSC_WAITBLOCK GetAnalogOutputNTAsync(Int32 port)
+  Double GetAxesCount()
+  ACSC_WAITBLOCK GetAxesCountAsync()
+  AxisStates GetAxisState(Axis axis)
+  ACSC_WAITBLOCK GetAxisStateAsync(Axis axis)
+  Int32[] GetBreakpointsList(ProgramBuffer bufferNum)
+  Double GetBuffersCount()
+  ACSC_WAITBLOCK GetBuffersCountAsync()
+  UInt64 GetCallbackMask(Interrupts interrupt)
+  CommOptions GetCommOptions()
+  Double GetConf(Int32 key, Int32 index)
+  ACSC_WAITBLOCK GetConfAsync(Int32 key, Int32 index)
+  ACSC_CONNECTION_INFO GetConnectionInfo()
+  ACSC_CONNECTION_DESC[] GetConnectionsList()
+  Double GetDBufferIndex()
+  ACSC_WAITBLOCK GetDBufferIndexAsync()
+  Double GetDeceleration(Axis axis)
+  ACSC_WAITBLOCK GetDecelerationAsync(Axis axis)
+  Int32 GetDefaultTimeout()
+  String GetErrorString(Int32 errorCode)
+  Int32 GetEtherCATError()
+  ACSC_WAITBLOCK GetEtherCATErrorAsync()
+  Double GetEtherCATSlaveIndex(Int32 vendorID, Int32 productID, Int32 count)
+  ACSC_WAITBLOCK GetEtherCATSlaveIndexAsync(Int32 vendorID, Int32 productID, Int32 count)
+  Double GetEtherCATSlaveOffset(String variableName, Int32 slaveIndex)
+  ACSC_WAITBLOCK GetEtherCATSlaveOffsetAsync(String variableName, Int32 slaveIndex)
+  Double GetEtherCATSlaveProductID(Int32 slaveIndex)
+  ACSC_WAITBLOCK GetEtherCATSlaveProductIDAsync(Int32 slaveIndex)
+  Double GetEtherCATSlaveRevision(Int32 slaveIndex)
+  ACSC_WAITBLOCK GetEtherCATSlaveRevisionAsync(Int32 slaveIndex)
+  Double GetEtherCATSlaveState(Int32 slaveIndex)
+  ACSC_WAITBLOCK GetEtherCATSlaveStateAsync(Int32 slaveIndex)
+  Double GetEtherCATSlaveType(Int32 vendorID, Int32 productID)
+  ACSC_WAITBLOCK GetEtherCATSlaveTypeAsync(Int32 vendorID, Int32 productID)
+  Double GetEtherCATSlaveVendorID(Int32 slaveIndex)
+  ACSC_WAITBLOCK GetEtherCATSlaveVendorIDAsync(Int32 slaveIndex)
+  EtherCatFlags GetEtherCATState()
+  ACSC_WAITBLOCK GetEtherCATStateAsync()
+  IPAddress[] GetEthernetCards(IPAddress broadcast)
+  ICollection<AcscControllerInfo> GetEthernetCardsExt(IPAddress broadcast, Int32 bufferArraySize = 100)
+  Int32 GetExtInput(Int32 port, Int32 bit)
+  ACSC_WAITBLOCK GetExtInputAsync(Int32 port, Int32 bit)
+  Int32 GetExtInputPort(Int32 port)
+  ACSC_WAITBLOCK GetExtInputPortAsync(Int32 port)
+  Int32 GetExtOutput(Int32 port, Int32 bit)
+  ACSC_WAITBLOCK GetExtOutputAsync(Int32 port, Int32 bit)
+  Int32 GetExtOutputPort(Int32 port)
+  ACSC_WAITBLOCK GetExtOutputPortAsync(Int32 port)
+  Double GetFPosition(Axis axis)
+  ACSC_WAITBLOCK GetFPositionAsync(Axis axis)
+  Double GetFVelocity(Axis axis)
+  ACSC_WAITBLOCK GetFVelocityAsync(Axis axis)
+  SafetyControlMasks GetFault(Axis axis)
+  ACSC_WAITBLOCK GetFaultAsync(Axis axis)
+  SafetyControlMasks GetFaultMask(Axis axis)
+  ACSC_WAITBLOCK GetFaultMaskAsync(Axis axis)
+  String GetFirmwareVersion()
+  ACSC_WAITBLOCK GetFirmwareVersionAsync()
+  String GetHistory(Boolean bClear)
+  IndexStates GetIndexState(Axis axis)
+  ACSC_WAITBLOCK GetIndexStateAsync(Axis axis)
+  Int32 GetInput(Int32 port, Int32 bit)
+  ACSC_WAITBLOCK GetInputAsync(Int32 port, Int32 bit)
+  Int32 GetInputPort(Int32 port)
+  ACSC_WAITBLOCK GetInputPortAsync(Int32 port)
+  UInt32 GetInterruptMask(Interrupts interrupt)
+  Double GetJerk(Axis axis)
+  ACSC_WAITBLOCK GetJerkAsync(Axis axis)
+  Double GetKillDeceleration(Axis axis)
+  ACSC_WAITBLOCK GetKillDecelerationAsync(Axis axis)
+  Int32 GetLastError()
+  UInt32 GetLibraryVersion()
+  String GetLogData()
+  ACSC_WAITBLOCK GetLogDataAsync()
+  String GetMessage(Boolean bClear)
+  Int32 GetMotionError(Axis axis)
+  ACSC_WAITBLOCK GetMotionErrorAsync(Axis axis)
+  Int32 GetMotorError(Axis axis)
+  ACSC_WAITBLOCK GetMotorErrorAsync(Axis axis)
+  MotorStates GetMotorState(Axis axis)
+  ACSC_WAITBLOCK GetMotorStateAsync(Axis axis)
+  UInt32 GetNETLibraryVersion()
+  Double GetNonVolatileMemoryFree()
+  ACSC_WAITBLOCK GetNonVolatileMemoryFreeAsync()
+  Double GetNonVolatileMemoryTotal()
+  ACSC_WAITBLOCK GetNonVolatileMemoryTotalAsync()
+  Double GetNonVolatileMemoryUsage()
+  ACSC_WAITBLOCK GetNonVolatileMemoryUsageAsync()
+  Int32 GetOutput(Int32 port, Int32 bit)
+  ACSC_WAITBLOCK GetOutputAsync(Int32 port, Int32 bit)
+  Int32 GetOutputPort(Int32 port)
+  ACSC_WAITBLOCK GetOutputPortAsync(Int32 port)
+  ACSC_PCI_SLOT[] GetPCICards()
+  Int32 GetProgramError(ProgramBuffer buffer)
+  ACSC_WAITBLOCK GetProgramErrorAsync(ProgramBuffer buffer)
+  ProgramStates GetProgramState(ProgramBuffer buffer)
+  ACSC_WAITBLOCK GetProgramStateAsync(ProgramBuffer buffer)
+  Int32 GetQueueOverflowTimeout()
+  Double GetRPosition(Axis axis)
+  ACSC_WAITBLOCK GetRPositionAsync(Axis axis)
+  Double GetRVelocity(Axis axis)
+  ACSC_WAITBLOCK GetRVelocityAsync(Axis axis)
+  SafetyControlMasks GetResponseMask(Axis axis)
+  ACSC_WAITBLOCK GetResponseMaskAsync(Axis axis)
+  Object GetResult(ACSC_WAITBLOCK waitBlock, Int32 timeout)
+  SafetyControlMasks GetSafetyInput(Axis axis, SafetyControlMasks input)
+  ACSC_WAITBLOCK GetSafetyInputAsync(Axis axis, SafetyControlMasks input)
+  SafetyControlMasks GetSafetyInputPort(Axis axis)
+  ACSC_WAITBLOCK GetSafetyInputPortAsync(Axis axis)
+  SafetyControlMasks GetSafetyInputPortInv(Axis axis)
+  ACSC_WAITBLOCK GetSafetyInputPortInvAsync(Axis axis)
+  String GetSerialNumber()
+  ACSC_WAITBLOCK GetSerialNumberAsync()
+  UInt32 GetSharedMemoryAddress(ProgramBuffer nBuf, String var)
+  ACSC_WAITBLOCK GetSharedMemoryAddressAsync(ProgramBuffer nBuf, String var)
+  String GetSingleMessage(Int32 timeout)
+  Double GetTargetPosition(Axis axis)
+  ACSC_WAITBLOCK GetTargetPositionAsync(Axis axis)
+  Int32 GetTimeout()
+  UInt32 GetUMDVersion()
+  Double GetVelocity(Axis axis)
+  ACSC_WAITBLOCK GetVelocityAsync(Axis axis)
+  Double GetVolatileMemoryFree()
+  ACSC_WAITBLOCK GetVolatileMemoryFreeAsync()
+  Double GetVolatileMemoryTotal()
+  ACSC_WAITBLOCK GetVolatileMemoryTotalAsync()
+  Double GetVolatileMemoryUsage()
+  ACSC_WAITBLOCK GetVolatileMemoryUsageAsync()
+  Void Go(Axis axis)
+  ACSC_WAITBLOCK GoAsync(Axis axis)
+  Void GoM(Axis[] axes)
+  ACSC_WAITBLOCK GoMAsync(Axis[] axes)
+  Void Group(Axis[] axes)
+  ACSC_WAITBLOCK GroupAsync(Axis[] axes)
+  Void Halt(Axis axis)
+  ACSC_WAITBLOCK HaltAsync(Axis axis)
+  Void HaltM(Axis[] axes)
+  ACSC_WAITBLOCK HaltMAsync(Axis[] axes)
+  Void InstallCallback(ACSC_USER_CALLBACK_FUNCTION callback, IntPtr cardContext, Interrupts interrupt)
+  JitterAnalysisOutput JitterAnalysis(JitterAnalysisInput analysisInput)
+  Void Jog(MotionFlags flags, Axis axis, Double velocity)
+  ACSC_WAITBLOCK JogAsync(MotionFlags flags, Axis axis, Double velocity)
+  Void JogM(MotionFlags flags, Axis[] axes, GlobalDirection[] direction, Double velocity)
+  ACSC_WAITBLOCK JogMAsync(MotionFlags flags, Axis[] axes, GlobalDirection[] direction, Double velocity)
+  Void Kill(Axis axis)
+  Void KillAll()
+  ACSC_WAITBLOCK KillAllAsync()
+  ACSC_WAITBLOCK KillAsync(Axis axis)
+  Void KillExt(Axis axis, Int32 reason)
+  ACSC_WAITBLOCK KillExtAsync(Axis axis, Int32 reason)
+  Void KillM(Axis[] axes)
+  ACSC_WAITBLOCK KillMAsync(Axis[] axes)
+  Void Line(Axis[] axes, Double[] point)
+  ACSC_WAITBLOCK LineAsync(Axis[] axes, Double[] point)
+  String LoadApplication(String fileName, ApplicationFileInfo info, Boolean isPreview)
+  ACSC_WAITBLOCK LoadApplicationAsync(String fileName, ApplicationFileInfo info, Boolean isPreview, out String preview)
+  Void LoadBuffer(ProgramBuffer buffer, String text)
+  ACSC_WAITBLOCK LoadBufferAsync(ProgramBuffer buffer, String text)
+  Void LoadBufferIgnoreServiceLines(ProgramBuffer buffer, String text)
+  ACSC_WAITBLOCK LoadBufferIgnoreServiceLinesAsync(ProgramBuffer buffer, String text)
+  Void LoadBuffersFromFile(String filename)
+  ACSC_WAITBLOCK LoadBuffersFromFileAsync(String filename)
+  Void LoadDataToController(Int32 dest, String destName, Int32 from1, Int32 to1, Int32 from2, Int32 to2, String srcFileName, Int32 srcNumFormat, Boolean bTranspose)
+  ACSC_WAITBLOCK LoadDataToControllerAsync(Int32 dest, String destName, Int32 from1, Int32 to1, Int32 from2, Int32 to2, String srcFileName, Int32 srcNumFormat, Boolean bTranspose)
+  Void LoadFileToIntegerVariable(ProgramBuffer nBuf, String var, Int32 from1, Int32 to1, Int32 from2, Int32 to2, String filename)
+  ACSC_WAITBLOCK LoadFileToIntegerVariableAsync(ProgramBuffer nBuf, String var, Int32 from1, Int32 to1, Int32 from2, Int32 to2, String filename)
+  Void LoadFileToRealVariable(ProgramBuffer nBuf, String var, Int32 from1, Int32 to1, Int32 from2, Int32 to2, String filename)
+  ACSC_WAITBLOCK LoadFileToRealVariableAsync(ProgramBuffer nBuf, String var, Int32 from1, Int32 to1, Int32 from2, Int32 to2, String filename)
+  Void MapEtherCATInput(MotionFlags flags, Int32 offset, String variableName)
+  ACSC_WAITBLOCK MapEtherCATInputAsync(MotionFlags flags, Int32 offset, String variableName)
+  Void MapEtherCATOutput(MotionFlags flags, Int32 offset, String variableName)
+  ACSC_WAITBLOCK MapEtherCATOutputAsync(MotionFlags flags, Int32 offset, String variableName)
+  Void MultiPoint(MotionFlags flags, Axis axis, Double dwell)
+  ACSC_WAITBLOCK MultiPointAsync(MotionFlags flags, Axis axis, Double dwell)
+  Void MultiPointM(MotionFlags flags, Axis[] axes, Double dwell)
+  ACSC_WAITBLOCK MultiPointMAsync(MotionFlags flags, Axis[] axes, Double dwell)
+  Void OpenCommEthernet(String address, Int32 port)
+  Void OpenCommEthernetTCP(String address, Int32 port)
+  Void OpenCommEthernetUDP(String address, Int32 port)
+  Void OpenCommPCI(Int32 slotNumber)
+  Void OpenCommSerial(Int32 channel, Int32 rate)
+  Void OpenCommSimulator()
+  Void OpenHistoryBuffer(Int32 size)
+  Void OpenLogFile(String fileName)
+  Void OpenMessageBuffer(Int32 size)
+  Void OpenSCLogFile(String fileName)
+  Void PegI(MotionFlags flags, Axis axis, Double width, Int32 firstPoint, Int32 interval, Int32 lastPoint, Int32 tbNumber, Double tbPeriod)
+  ACSC_WAITBLOCK PegIAsync(MotionFlags flags, Axis axis, Double width, Int32 firstPoint, Int32 interval, Int32 lastPoint, Int32 tbNumber, Double tbPeriod)
+  Void PegIncNT(MotionFlags flags, Axis axis, Double width, Double firstPoint, Double interval, Double lastPoint, Int32 tbNumber, Double tbPeriod)
+  ACSC_WAITBLOCK PegIncNTAsync(MotionFlags flags, Axis axis, Double width, Double firstPoint, Double interval, Double lastPoint, Int32 tbNumber, Double tbPeriod)
+  Void PegR(MotionFlags flags, Axis axis, Double width, String pointArray, String stateArray, Int32 tbNumber, Double tbPeriod)
+  ACSC_WAITBLOCK PegRAsync(MotionFlags flags, Axis axis, Double width, String pointArray, String stateArray, Int32 tbNumber, Double tbPeriod)
+  Void PegRandomNT(MotionFlags flags, Axis axis, Double width, Int32 mode, Int32 firstIndex, Int32 lastIndex, String pointArray, String stateArray, Int32 tbNumber, Double tbPeriod)
+  ACSC_WAITBLOCK PegRandomNTAsync(MotionFlags flags, Axis axis, Double width, Int32 mode, Int32 firstIndex, Int32 lastIndex, String pointArray, String stateArray, Int32 tbNumber, Double tbPeriod)
+  Void Projection(Axis[] axes, String matrix)
+  ACSC_WAITBLOCK ProjectionAsync(Axis[] axes, String matrix)
+  String RawTransaction(String outBuf)
+  ACSC_WAITBLOCK RawTransactionAsync(String outBuf)
+  Double ReadSDOValueOverEtherCAT(MotionFlags flags, Int32 slaveIndex, Int32 index, Int32 subIndex)
+  ACSC_WAITBLOCK ReadSDOValueOverEtherCATAsync(MotionFlags flags, Int32 slaveIndex, Int32 index, Int32 subIndex)
+  Object ReadSharedMemoryInteger(UInt32 address, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  Object ReadSharedMemoryReal(UInt32 address, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  Void ReadTypeless(ProgramBuffer nBuf, String var, Int32 from1, Int32 to1, Int32 from2, Int32 to2, ref IntPtr pValues, ref Int32 dataSize, ref Int32 dim1, ref Int32 dim2, ref Int32 dataOffset)
+  ACSC_WAITBLOCK ReadTypelessAsync(ProgramBuffer nBuf, String var, Int32 from1, Int32 to1, Int32 from2, Int32 to2, ref IntPtr pValues, ref Int32 dataSize, ref Int32 dim1, ref Int32 dim2, ref Int32 dataOffset)
+  Object ReadVariable(String variable, ProgramBuffer nBuf = ACSC_NONE, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  Object ReadVariableAsMatrix(String variable, ProgramBuffer nBuf = ACSC_NONE, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  ACSC_WAITBLOCK ReadVariableAsMatrixAsync(String variable, ProgramBuffer nBuf = ACSC_NONE, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  Object ReadVariableAsObject(String variable, ProgramBuffer nBuf = ACSC_NONE, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  Object ReadVariableAsScalar(String variable, ProgramBuffer nBuf, Int32 ind1 = -1, Int32 ind2 = -1)
+  ACSC_WAITBLOCK ReadVariableAsScalarAsync(String variable, ProgramBuffer nBuf, Int32 ind1 = -1, Int32 ind2 = -1)
+  Object ReadVariableAsVector(String variable, ProgramBuffer nBuf = ACSC_NONE, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  ACSC_WAITBLOCK ReadVariableAsVectorAsync(String variable, ProgramBuffer nBuf = ACSC_NONE, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  ACSC_WAITBLOCK ReadVariableAsync(String variable, ProgramBuffer nBuf = ACSC_NONE, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  String Receive()
+  ACSC_WAITBLOCK ReceiveAsync()
+  Void RegisterEmergencyStop()
+  Void RegisterFRFUser(Byte[] regKey, out Int32 errorCode)
+  Void ReleaseComm()
+  Void ResetIndexState(Axis axis, IndexStates mask)
+  ACSC_WAITBLOCK ResetIndexStateAsync(Axis axis, IndexStates mask)
+  Void RunBuffer(ProgramBuffer buffer, String label)
+  ACSC_WAITBLOCK RunBufferAsync(ProgramBuffer buffer, String label)
+  String SaveApplication(String fileName, ApplicationFileInfo info)
+  ACSC_WAITBLOCK SaveApplicationAsync(String fileName, ApplicationFileInfo info, out String preview)
+  Void Segment(MotionFlags flags, Axis[] axes, Double[] point)
+  Void SegmentArc1(MotionFlags flags, Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double velocity, Double endVelocity, String values, String variables, Int32 index, String masks)
+  ACSC_WAITBLOCK SegmentArc1Async(MotionFlags flags, Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double velocity, Double endVelocity, String values, String variables, Int32 index, String masks)
+  Void SegmentArc1Ext(MotionFlags flags, Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  ACSC_WAITBLOCK SegmentArc1ExtAsync(MotionFlags flags, Axis[] axes, Double[] center, Double[] finalPoint, RotationDirection rotation, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  Void SegmentArc2(MotionFlags flags, Axis[] axes, Double[] center, Double angle, Double velocity, Double endVelocity, String values, String variables, Int32 index, String masks)
+  ACSC_WAITBLOCK SegmentArc2Async(MotionFlags flags, Axis[] axes, Double[] center, Double angle, Double velocity, Double endVelocity, String values, String variables, Int32 index, String masks)
+  Void SegmentArc2Ext(MotionFlags flags, Axis[] axes, Double[] center, Double angle, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  ACSC_WAITBLOCK SegmentArc2ExtAsync(MotionFlags flags, Axis[] axes, Double[] center, Double angle, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  ACSC_WAITBLOCK SegmentAsync(MotionFlags flags, Axis[] axes, Double[] point)
+  Void SegmentLine(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity, String values, String variables, Int32 index, String masks)
+  ACSC_WAITBLOCK SegmentLineAsync(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity, String values, String variables, Int32 index, String masks)
+  Void SegmentLineExt(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  ACSC_WAITBLOCK SegmentLineExtAsync(MotionFlags flags, Axis[] axes, Double[] point, Double velocity, Double endVelocity, Double time, String values, String variables, Int32 index, String masks)
+  Void SegmentedMotion(MotionFlags flags, Axis[] axes, Double[] point)
+  ACSC_WAITBLOCK SegmentedMotionAsync(MotionFlags flags, Axis[] axes, Double[] point)
+  Void Send(String buf)
+  ACSC_WAITBLOCK SendAsync(String buf)
+  Void SetAcceleration(Axis axis, Double acceleration)
+  ACSC_WAITBLOCK SetAccelerationAsync(Axis axis, Double acceleration)
+  Void SetAccelerationImm(Axis axis, Double acceleration)
+  ACSC_WAITBLOCK SetAccelerationImmAsync(Axis axis, Double acceleration)
+  Void SetAnalogOutput(Int32 port, Int32 value)
+  ACSC_WAITBLOCK SetAnalogOutputAsync(Int32 port, Int32 value)
+  Void SetAnalogOutputNT(Int32 port, Double value)
+  ACSC_WAITBLOCK SetAnalogOutputNTAsync(Int32 port, Double value)
+  Void SetBreakpoint(ProgramBuffer buffer, Int32 line)
+  ACSC_WAITBLOCK SetBreakpointAsync(ProgramBuffer buffer, Int32 line)
+  Void SetCallback(ACSC_INTR_CALLBACK_FUNC callback, Interrupts interrupt)
+  Void SetCallbackExt(ACSC_INTR_CALLBACK_FUNC_EXT callback, IntPtr cardContext, Interrupts interrupt)
+  Void SetCallbackMask(Interrupts interrupt, UInt64 mask)
+  Void SetCallbackPriority(Int32 priority)
+  Void SetCommOptions(CommOptions options)
+  Void SetConf(Int32 key, Int32 index, Double value)
+  ACSC_WAITBLOCK SetConfAsync(Int32 key, Int32 index, Double value)
+  Void SetDeceleration(Axis axis, Double deceleration)
+  ACSC_WAITBLOCK SetDecelerationAsync(Axis axis, Double deceleration)
+  Void SetDecelerationImm(Axis axis, Double deceleration)
+  ACSC_WAITBLOCK SetDecelerationImmAsync(Axis axis, Double deceleration)
+  Void SetExtOutput(Int32 port, Int32 bit, Int32 value)
+  ACSC_WAITBLOCK SetExtOutputAsync(Int32 port, Int32 bit, Int32 value)
+  Void SetExtOutputPort(Int32 port, Int32 value)
+  ACSC_WAITBLOCK SetExtOutputPortAsync(Int32 port, Int32 value)
+  Void SetFPosition(Axis axis, Double fPosition)
+  ACSC_WAITBLOCK SetFPositionAsync(Axis axis, Double fPosition)
+  Void SetFaultMask(Axis axis, SafetyControlMasks mask)
+  ACSC_WAITBLOCK SetFaultMaskAsync(Axis axis, SafetyControlMasks mask)
+  Void SetInterruptMask(Interrupts interrupt, UInt32 mask)
+  Void SetIterations(Int32 iterations)
+  Void SetJerk(Axis axis, Double jerk)
+  ACSC_WAITBLOCK SetJerkAsync(Axis axis, Double jerk)
+  Void SetJerkImm(Axis axis, Double jerk)
+  ACSC_WAITBLOCK SetJerkImmAsync(Axis axis, Double jerk)
+  Void SetKillDeceleration(Axis axis, Double killDeceleration)
+  ACSC_WAITBLOCK SetKillDecelerationAsync(Axis axis, Double killDeceleration)
+  Void SetKillDecelerationImm(Axis axis, Double killDeceleration)
+  ACSC_WAITBLOCK SetKillDecelerationImmAsync(Axis axis, Double killDeceleration)
+  Void SetLogFileOptions(ACSC_LOG_DETALIZATION_LEVEL detalization, ACSC_LOG_DATA_PRESENTATION presentation)
+  Void SetMaster(Axis axis, String formula)
+  ACSC_WAITBLOCK SetMasterAsync(Axis axis, String formula)
+  Void SetOutput(Int32 port, Int32 bit, Int32 value)
+  ACSC_WAITBLOCK SetOutputAsync(Int32 port, Int32 bit, Int32 value)
+  Void SetOutputPort(Int32 port, Int32 value)
+  ACSC_WAITBLOCK SetOutputPortAsync(Int32 port, Int32 value)
+  Void SetQueueOverflowTimeout(Int32 timeout)
+  Void SetRPosition(Axis axis, Double rPosition)
+  ACSC_WAITBLOCK SetRPositionAsync(Axis axis, Double rPosition)
+  Void SetResponseMask(Axis axis, SafetyControlMasks mask)
+  ACSC_WAITBLOCK SetResponseMaskAsync(Axis axis, SafetyControlMasks mask)
+  Void SetSafetyInputPortInv(Axis axis, SafetyControlMasks value)
+  ACSC_WAITBLOCK SetSafetyInputPortInvAsync(Axis axis, SafetyControlMasks value)
+  Void SetServerExt(String iP, Int32 port)
+  Void SetServerExtLogin(String iP, Int32 port, String username, String password, String domain)
+  Void SetTargetPosition(Axis axis, Double targetPosition)
+  ACSC_WAITBLOCK SetTargetPositionAsync(Axis axis, Double targetPosition)
+  Void SetTargetPositionM(Axis[] axes, Double[] targetPositions)
+  ACSC_WAITBLOCK SetTargetPositionMAsync(Axis[] axes, Double[] targetPositions)
+  Void SetTimeout(Int32 timeout)
+  Void SetVelocity(Axis axis, Double velocity)
+  ACSC_WAITBLOCK SetVelocityAsync(Axis axis, Double velocity)
+  Void SetVelocityImm(Axis axis, Double velocity)
+  ACSC_WAITBLOCK SetVelocityImmAsync(Axis axis, Double velocity)
+  Void Slave(MotionFlags flags, Axis axis)
+  ACSC_WAITBLOCK SlaveAsync(MotionFlags flags, Axis axis)
+  Void SlaveStalled(MotionFlags flags, Axis axis, Double left, Double right)
+  ACSC_WAITBLOCK SlaveStalledAsync(MotionFlags flags, Axis axis, Double left, Double right)
+  Void Spline(MotionFlags flags, Axis axis, Double period)
+  ACSC_WAITBLOCK SplineAsync(MotionFlags flags, Axis axis, Double period)
+  Void SplineM(MotionFlags flags, Axis[] axes, Double period)
+  ACSC_WAITBLOCK SplineMAsync(MotionFlags flags, Axis[] axes, Double period)
+  Void Split(Axis[] axes)
+  Void SplitAll()
+  ACSC_WAITBLOCK SplitAllAsync()
+  ACSC_WAITBLOCK SplitAsync(Axis[] axes)
+  Void StartPegNT(Axis axis)
+  ACSC_WAITBLOCK StartPegNTAsync(Axis axis)
+  Void StartSPiiPlusSC()
+  Void StopBuffer(ProgramBuffer buffer)
+  ACSC_WAITBLOCK StopBufferAsync(ProgramBuffer buffer)
+  Void StopCollect()
+  ACSC_WAITBLOCK StopCollectAsync()
+  Void StopPegNT(Axis axis)
+  ACSC_WAITBLOCK StopPegNTAsync(Axis axis)
+  Void StopSPiiPlusSC()
+  Void Stopper(Axis[] axes)
+  ACSC_WAITBLOCK StopperAsync(Axis[] axes)
+  Void SuspendBuffer(ProgramBuffer buffer)
+  ACSC_WAITBLOCK SuspendBufferAsync(ProgramBuffer buffer)
+  Double SysInfo(Int32 key)
+  ACSC_WAITBLOCK SysInfoAsync(Int32 key)
+  Void TerminateConnection(ACSC_CONNECTION_DESC connection)
+  Void ToPoint(MotionFlags flags, Axis axis, Double point)
+  ACSC_WAITBLOCK ToPointAsync(MotionFlags flags, Axis axis, Double point)
+  Void ToPointM(MotionFlags flags, Axis[] axes, Double[] point)
+  ACSC_WAITBLOCK ToPointMAsync(MotionFlags flags, Axis[] axes, Double[] point)
+  Void Track(MotionFlags flags, Axis axis)
+  ACSC_WAITBLOCK TrackAsync(MotionFlags flags, Axis axis)
+  Void TrackM(MotionFlags flags, Axis[] axis)
+  ACSC_WAITBLOCK TrackMAsync(MotionFlags flags, Axis[] axis)
+  String Transaction(String outBuf)
+  ACSC_WAITBLOCK TransactionAsync(String outBuf)
+  Byte[] TransactionBinary(String command)
+  Byte[] TransactionBinary(Byte[] outBuf)
+  ACSC_WAITBLOCK TransactionBinaryAsync(String command)
+  ACSC_WAITBLOCK TransactionBinaryAsync(Byte[] outBuf)
+  Void UnmapEtherCATInputsOutputs()
+  ACSC_WAITBLOCK UnmapEtherCATInputsOutputsAsync()
+  Void UnregisterEmergencyStop()
+  String UploadBuffer(ProgramBuffer buffer)
+  ACSC_WAITBLOCK UploadBufferAsync(ProgramBuffer buffer)
+  Void UploadDataFromController(Int32 src, String srcName, Int32 srcNumFormat, Int32 from1, Int32 to1, Int32 from2, Int32 to2, String destFileName, String destNumFormat, Boolean bTranspose)
+  ACSC_WAITBLOCK UploadDataFromControllerAsync(Int32 src, String srcName, Int32 srcNumFormat, Int32 from1, Int32 to1, Int32 from2, Int32 to2, String destFileName, String destNumFormat, Boolean bTranspose)
+  Void WaitCollectEndExt(Int32 timeout, Axis axis)
+  Void WaitInput(Int32 port, Int32 bit, Int32 state, Int32 timeout)
+  Void WaitLogicalMotionEnd(Axis axis, Int32 timeout)
+  Void WaitMotionEnd(Axis axis, Int32 timeout)
+  Void WaitMotorCommutated(Axis axis, Int32 state, Int32 timeout)
+  Void WaitMotorEnabled(Axis axis, Int32 state, Int32 timeout)
+  Void WaitPegReadyNT(Axis axis, Int32 timeout)
+  Void WaitProgramEnd(ProgramBuffer buffer, Int32 timeout)
+  Void WaitUserCondition(ACSC_USER_CONDITION_FUNC userCondition, Int32 timeout)
+  Void WriteLogFile(String buf)
+  Void WriteSCLogFile(String buf)
+  Void WriteSDOValueOverEtherCAT(MotionFlags flags, Int32 slaveIndex, Int32 index, Int32 subIndex, Double value)
+  ACSC_WAITBLOCK WriteSDOValueOverEtherCATAsync(MotionFlags flags, Int32 slaveIndex, Int32 index, Int32 subIndex, Double value)
+  Void WriteSharedMemoryVariable(Object value, UInt32 address, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  Void WriteVariable(Object value, String variable, ProgramBuffer nBuf = ACSC_NONE, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  ACSC_WAITBLOCK WriteVariableAsync(Object value, String variable, ProgramBuffer nBuf = ACSC_NONE, Int32 from1 = -1, Int32 to1 = -1, Int32 from2 = -1, Int32 to2 = -1)
+  Void add_ACSPLPROGRAM(BufferEventHandler value)
+  Void add_ACSPLPROGRAMEX(DefaultAxisEventHandler value)
+  Void add_COMMCHANNELCLOSED(DefaultAxisEventHandler value)
+  Void add_CYCLE(DefaultAxisEventHandler value)
+  Void add_EMERGENCY(DefaultAxisEventHandler value)
+  Void add_ETHERCATERROR(DefaultAxisEventHandler value)
+  Void add_INPUT(InputEventHandler value)
+  Void add_LOGICALMOTIONEND(AxisEventHandler value)
+  Void add_MARK1(AxisEventHandler value)
+  Void add_MARK2(AxisEventHandler value)
+  Void add_MESSAGE(DefaultAxisEventHandler value)
+  Void add_MOTIONFAILURE(AxisEventHandler value)
+  Void add_MOTIONPHASECHANGE(AxisEventHandler value)
+  Void add_MOTIONSTART(AxisEventHandler value)
+  Void add_MOTORFAILURE(AxisEventHandler value)
+  Void add_NEWSEGM(DefaultAxisEventHandler value)
+  Void add_PEG(AxisEventHandler value)
+  Void add_PHYSICALMOTIONEND(AxisEventHandler value)
+  Void add_PROGRAMEND(BufferEventHandler value)
+  Void add_SOFTWAREESTOP(DefaultAxisEventHandler value)
+  Void add_SYSTEMERROR(DefaultAxisEventHandler value)
+  Void add_TRIGGER(AxisEventHandler value)
+  Boolean get_IsConnected()
+  Void remove_ACSPLPROGRAM(BufferEventHandler value)
+  Void remove_ACSPLPROGRAMEX(DefaultAxisEventHandler value)
+  Void remove_COMMCHANNELCLOSED(DefaultAxisEventHandler value)
+  Void remove_CYCLE(DefaultAxisEventHandler value)
+  Void remove_EMERGENCY(DefaultAxisEventHandler value)
+  Void remove_ETHERCATERROR(DefaultAxisEventHandler value)
+  Void remove_INPUT(InputEventHandler value)
+  Void remove_LOGICALMOTIONEND(AxisEventHandler value)
+  Void remove_MARK1(AxisEventHandler value)
+  Void remove_MARK2(AxisEventHandler value)
+  Void remove_MESSAGE(DefaultAxisEventHandler value)
+  Void remove_MOTIONFAILURE(AxisEventHandler value)
+  Void remove_MOTIONPHASECHANGE(AxisEventHandler value)
+  Void remove_MOTIONSTART(AxisEventHandler value)
+  Void remove_MOTORFAILURE(AxisEventHandler value)
+  Void remove_NEWSEGM(DefaultAxisEventHandler value)
+  Void remove_PEG(AxisEventHandler value)
+  Void remove_PHYSICALMOTIONEND(AxisEventHandler value)
+  Void remove_PROGRAMEND(BufferEventHandler value)
+  Void remove_SOFTWAREESTOP(DefaultAxisEventHandler value)
+  Void remove_SYSTEMERROR(DefaultAxisEventHandler value)
+  Void remove_TRIGGER(AxisEventHandler value)
+
+## Api properties
+  Boolean IsConnected { get; }
+
+## Api events / fields
+  event BufferEventHandler ACSPLPROGRAM
+  event DefaultAxisEventHandler ACSPLPROGRAMEX
+  event DefaultAxisEventHandler COMMCHANNELCLOSED
+  event DefaultAxisEventHandler CYCLE
+  event DefaultAxisEventHandler EMERGENCY
+  event DefaultAxisEventHandler ETHERCATERROR
+  event InputEventHandler INPUT
+  event AxisEventHandler LOGICALMOTIONEND
+  event AxisEventHandler MARK1
+  event AxisEventHandler MARK2
+  event DefaultAxisEventHandler MESSAGE
+  event AxisEventHandler MOTIONFAILURE
+  event AxisEventHandler MOTIONPHASECHANGE
+  event AxisEventHandler MOTIONSTART
+  event AxisEventHandler MOTORFAILURE
+  event DefaultAxisEventHandler NEWSEGM
+  event AxisEventHandler PEG
+  event AxisEventHandler PHYSICALMOTIONEND
+  event BufferEventHandler PROGRAMEND
+  event DefaultAxisEventHandler SOFTWAREESTOP
+  event DefaultAxisEventHandler SYSTEMERROR
+  event AxisEventHandler TRIGGER
+  field Int32 ACSC_NONE = -1
+
+## enum Axis
+  ACSC_AXIS_0 = 0
+  ACSC_AXIS_1 = 1
+  ACSC_AXIS_2 = 2
+  ACSC_AXIS_3 = 3
+  ACSC_AXIS_4 = 4
+  ACSC_AXIS_5 = 5
+  ACSC_AXIS_6 = 6
+  ACSC_AXIS_7 = 7
+  ACSC_AXIS_8 = 8
+  ACSC_AXIS_9 = 9
+  ACSC_AXIS_10 = 10
+  ACSC_AXIS_11 = 11
+  ACSC_AXIS_12 = 12
+  ACSC_AXIS_13 = 13
+  ACSC_AXIS_14 = 14
+  ACSC_AXIS_15 = 15
+  ACSC_AXIS_16 = 16
+  ACSC_AXIS_17 = 17
+  ACSC_AXIS_18 = 18
+  ACSC_AXIS_19 = 19
+  ACSC_AXIS_20 = 20
+  ACSC_AXIS_21 = 21
+  ACSC_AXIS_22 = 22
+  ACSC_AXIS_23 = 23
+  ACSC_AXIS_24 = 24
+  ACSC_AXIS_25 = 25
+  ACSC_AXIS_26 = 26
+  ACSC_AXIS_27 = 27
+  ACSC_AXIS_28 = 28
+  ACSC_AXIS_29 = 29
+  ACSC_AXIS_30 = 30
+  ACSC_AXIS_31 = 31
+  ACSC_AXIS_32 = 32
+  ACSC_AXIS_33 = 33
+  ACSC_AXIS_34 = 34
+  ACSC_AXIS_35 = 35
+  ACSC_AXIS_36 = 36
+  ACSC_AXIS_37 = 37
+  ACSC_AXIS_38 = 38
+  ACSC_AXIS_39 = 39
+  ACSC_AXIS_40 = 40
+  ACSC_AXIS_41 = 41
+  ACSC_AXIS_42 = 42
+  ACSC_AXIS_43 = 43
+  ACSC_AXIS_44 = 44
+  ACSC_AXIS_45 = 45
+  ACSC_AXIS_46 = 46
+  ACSC_AXIS_47 = 47
+  ACSC_AXIS_48 = 48
+  ACSC_AXIS_49 = 49
+  ACSC_AXIS_50 = 50
+  ACSC_AXIS_51 = 51
+  ACSC_AXIS_52 = 52
+  ACSC_AXIS_53 = 53
+  ACSC_AXIS_54 = 54
+  ACSC_AXIS_55 = 55
+  ACSC_AXIS_56 = 56
+  ACSC_AXIS_57 = 57
+  ACSC_AXIS_58 = 58
+  ACSC_AXIS_59 = 59
+  ACSC_AXIS_60 = 60
+  ACSC_AXIS_61 = 61
+  ACSC_AXIS_62 = 62
+  ACSC_AXIS_63 = 63
+  ACSC_SYSTEM = -3
+  ACSC_PAR_ALL = -2
+  ACSC_NONE = -1
+
+## enum MotorStates
+  ACSC_NONE = 0
+  ACSC_MST_ENABLE = 1
+  ACSC_MST_INPOS = 16
+  ACSC_MST_MOVE = 32
+  ACSC_MST_ACC = 64
+  ACSC_ALL = -1
+
+## enum MotionFlags
+  ACSC_NONE = 0
+  ACSC_AMF_WAIT = 1
+  ACSC_AMF_RELATIVE = 2
+  ACSC_AMF_VELOCITY = 4
+  ACSC_AMF_ENDVELOCITY = 8
+  ACSC_AMF_POSITIONLOCK = 16
+  ACSC_AMF_VELOCITYLOCK = 32
+  ACSC_AMF_CYCLIC = 256
+  ACSC_AMF_STALLED = 512
+  ACSC_AMF_STALLED = 512
+  ACSC_AMF_CUBIC = 1024
+  ACSC_AMF_EXTRAPOLATED = 4096
+  ACSC_AMF_AXISLIMIT = 8192
+  ACSC_AMF_MAXIMUM = 16384
+  ACSC_AMF_SYNCHRONOUS = 32768
+  ACSC_AMF_JUNCTIONVELOCITY = 65536
+  ACSC_AMF_ACCURATE = 131072
+  ACSC_AMF_ACCURATE = 131072
+  ACSC_AMF_USERVARIABLES = 262144
+  ACSC_AMF_INVERT_OUTPUT = 524288
+  ACSC_AMF_CURVEVELOCITY = 1048576
+  ACSC_ALL = -1
+
+## enum ProgramBuffer
+  ACSC_BUFFER_0 = 0
+  ACSC_BUFFER_1 = 1
+  ACSC_BUFFER_2 = 2
+  ACSC_BUFFER_3 = 3
+  ACSC_BUFFER_4 = 4
+  ACSC_BUFFER_5 = 5
+  ACSC_BUFFER_6 = 6
+  ACSC_BUFFER_7 = 7
+  ACSC_BUFFER_8 = 8
+  ACSC_BUFFER_9 = 9
+  ACSC_BUFFER_10 = 10
+  ACSC_BUFFER_11 = 11
+  ACSC_BUFFER_12 = 12
+  ACSC_BUFFER_13 = 13
+  ACSC_BUFFER_14 = 14
+  ACSC_BUFFER_15 = 15
+  ACSC_BUFFER_16 = 16
+  ACSC_BUFFER_17 = 17
+  ACSC_BUFFER_18 = 18
+  ACSC_BUFFER_19 = 19
+  ACSC_BUFFER_20 = 20
+  ACSC_BUFFER_21 = 21
+  ACSC_BUFFER_22 = 22
+  ACSC_BUFFER_23 = 23
+  ACSC_BUFFER_24 = 24
+  ACSC_BUFFER_25 = 25
+  ACSC_BUFFER_26 = 26
+  ACSC_BUFFER_27 = 27
+  ACSC_BUFFER_28 = 28
+  ACSC_BUFFER_29 = 29
+  ACSC_BUFFER_30 = 30
+  ACSC_BUFFER_31 = 31
+  ACSC_BUFFER_32 = 32
+  ACSC_BUFFER_33 = 33
+  ACSC_BUFFER_34 = 34
+  ACSC_BUFFER_35 = 35
+  ACSC_BUFFER_36 = 36
+  ACSC_BUFFER_37 = 37
+  ACSC_BUFFER_38 = 38
+  ACSC_BUFFER_39 = 39
+  ACSC_BUFFER_40 = 40
+  ACSC_BUFFER_41 = 41
+  ACSC_BUFFER_42 = 42
+  ACSC_BUFFER_43 = 43
+  ACSC_BUFFER_44 = 44
+  ACSC_BUFFER_45 = 45
+  ACSC_BUFFER_46 = 46
+  ACSC_BUFFER_47 = 47
+  ACSC_BUFFER_48 = 48
+  ACSC_BUFFER_49 = 49
+  ACSC_BUFFER_50 = 50
+  ACSC_BUFFER_51 = 51
+  ACSC_BUFFER_52 = 52
+  ACSC_BUFFER_53 = 53
+  ACSC_BUFFER_54 = 54
+  ACSC_BUFFER_55 = 55
+  ACSC_BUFFER_56 = 56
+  ACSC_BUFFER_57 = 57
+  ACSC_BUFFER_58 = 58
+  ACSC_BUFFER_59 = 59
+  ACSC_BUFFER_60 = 60
+  ACSC_BUFFER_61 = 61
+  ACSC_BUFFER_62 = 62
+  ACSC_BUFFER_63 = 63
+  ACSC_BUFFER_64 = 64
+  ACSC_BUFFER_ALL = -2
+  ACSC_NONE = -1
+
+## enum ProgramStates
+  ACSC_NONE = 0
+  ACSC_PST_COMPILED = 1
+  ACSC_PST_RUN = 2
+  ACSC_PST_SUSPEND = 4
+  ACSC_PST_DEBUG = 32
+  ACSC_PST_AUTO = 128
+  ACSC_ALL = -1
+
+## enum EthernetCommOption
+  ACSC_SOCKET_DGRAM_PORT = 700
+  ACSC_SOCKET_STREAM_PORT = 701
+
+## enum SafetyControlMasks
+  ACSC_NONE = 0
+  ACSC_SAFETY_RL = 1
+  ACSC_SAFETY_LL = 2
+  ACSC_SAFETY_NETWORK = 4
+  ACSC_SAFETY_HOT = 16
+  ACSC_SAFETY_SRL = 32
+  ACSC_SAFETY_SLL = 64
+  ACSC_SAFETY_ENCNC = 128
+  ACSC_SAFETY_ENC2NC = 256
+  ACSC_SAFETY_DRIVE = 512
+  ACSC_SAFETY_ENC = 1024
+  ACSC_SAFETY_ENC2 = 2048
+  ACSC_SAFETY_PE = 4096
+  ACSC_SAFETY_CPE = 8192
+  ACSC_SAFETY_VL = 16384
+  ACSC_SAFETY_AL = 32768
+  ACSC_SAFETY_CL = 65536
+  ACSC_SAFETY_SP = 131072
+  ACSC_SAFETY_STO = 262144
+  ACSC_SAFETY_HSSINC = 1048576
+  ACSC_SAFETY_EXTNT = 8388608
+  ACSC_SAFETY_TEMP = 16777216
+  ACSC_SAFETY_PROG = 33554432
+  ACSC_SAFETY_MEM = 67108864
+  ACSC_SAFETY_TIME = 134217728
+  ACSC_SAFETY_ES = 268435456
+  ACSC_SAFETY_INT = 536870912
+  ACSC_SAFETY_INTGR = 1073741824
+  ACSC_SAFETY_FAILURE = 2147483648
+  ACSC_ALL = 4294967295
+
+## enum AxisStates
+  ACSC_NONE = 0
+  ACSC_AST_LEAD = 1
+  ACSC_AST_DC = 2
+  ACSC_AST_PEG = 4
+  ACSC_AST_PEGREADY = 16
+  ACSC_AST_MOVE = 32
+  ACSC_AST_ACC = 64
+  ACSC_AST_SEGMENT = 128
+  ACSC_AST_VELLOCK = 256
+  ACSC_AST_POSLOCK = 512
+  ACSC_ALL = -1
+

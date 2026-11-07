@@ -1,0 +1,52 @@
+<Project>
+
+  <!--
+    统一约定 ACS SPiiPlus .NET SDK 的引用位置。
+    默认使用 v4.0.0 的 .NET 8 版本(与机器上安装的 SPiiPlus ADK Suite 4.00 一致)。
+    若需要改用公司 AB1 工程里验证过的 3.3.0 版本，只需在命令行上加:
+        dotnet build -p:AcsSdkVariant=v3.3.0-netfx
+  -->
+  <PropertyGroup>
+    <AcsSdkVariant Condition="'$(AcsSdkVariant)' == ''">v4.0.0-net8</AcsSdkVariant>
+    <AcsSdkDir>$(MSBuildThisFileDirectory)lib\$(AcsSdkVariant)</AcsSdkDir>
+    <AcsSdkAssemblyName Condition="'$(AcsSdkVariant)' == 'v3.3.0-netfx'">ACS.SPiiPlusNET</AcsSdkAssemblyName>
+    <AcsSdkAssemblyName Condition="'$(AcsSdkAssemblyName)' == ''">ACS.SPiiPlusNET8</AcsSdkAssemblyName>
+    <AcsSdkDll>$(AcsSdkDir)\$(AcsSdkAssemblyName).dll</AcsSdkDll>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
+
+  <!--
+    SPiiPlus 模拟器:OpenCommSimulator 要求 sb4.exe 与应用程序可执行文件在同一个目录。
+    优先使用本机 SPiiPlus Runtime Kit 中安装的 sb4.exe，找不到时回退到 lib\simulator\sb4.exe。
+  -->
+  <PropertyGroup>
+    <AcsRuntimeKitDir Condition="'$(AcsRuntimeKitDir)' == ''">C:\Program Files (x86)\ACS Motion Control\SPiiPlus Runtime Kit</AcsRuntimeKitDir>
+    <AcsSimulatorExe Condition="Exists('$(AcsRuntimeKitDir)\User Mode Driver\sb4.exe')">$(AcsRuntimeKitDir)\User Mode Driver\sb4.exe</AcsSimulatorExe>
+    <AcsSimulatorExe Condition="'$(AcsSimulatorExe)' == ''">$(MSBuildThisFileDirectory)lib\simulator\sb4.exe</AcsSimulatorExe>
+  </PropertyGroup>
+
+  <ItemGroup Condition="Exists('$(AcsSimulatorExe)') and '$(OutputType)' != ''">
+    <None Include="$(AcsSimulatorExe)">
+      <Link>sb4.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- ACS.SPiiPlusNET 的托管 DLL 需要与 ACSCL_x64.dll(已随 SPiiPlus Runtime Kit 安装到系统目录)配合使用 -->
+  <ItemGroup Condition="'$(AcsSdkReference)' != 'false'">
+    <Reference Include="$(AcsSdkAssemblyName)">
+      <HintPath>$(AcsSdkDll)</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- 校验引用的 SDK 文件确实存在，避免出现难以定位的编译错误 -->
+  <Target Name="AcsSdkCheck" BeforeTargets="ResolveReferences" Condition="'$(AcsSdkReference)' != 'false'">
+    <Error Condition="!Exists('$(AcsSdkDll)')" Text="找不到 ACS SDK 程序集: $(AcsSdkDll)。请检查 AcsSdkVariant ($(AcsSdkVariant)) 或 lib 目录。" />
+  </Target>
+
+</Project>

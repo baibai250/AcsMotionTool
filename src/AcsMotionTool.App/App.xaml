@@ -1,0 +1,24 @@
+<Application x:Class="AcsMotionTool.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:infra="clr-namespace:AcsMotionTool.App.Infrastructure">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- HandyControl 主题（基础控件、对话框、Toast 等） -->
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml" />
+
+                <!-- 本项目设计系统（在 HC 之后合并，覆盖同名隐式样式） -->
+                <ResourceDictionary Source="Themes/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- 转换器 -->
+            <infra:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <infra:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <infra:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+            <infra:NonEmptyStringToVisibilityConverter x:Key="NonEmptyStringToVisibilityConverter" />
+            <infra:IntEqualsConverter x:Key="IntEqualsConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

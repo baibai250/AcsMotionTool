@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>AcsMotionTool.Data</AssemblyName>
+    <RootNamespace>AcsMotionTool.Data</RootNamespace>
+    <Description>MySQL 数据访问层：软限位等配置的持久化</Description>
+    <!-- 该层不使用 ACS SDK -->
+    <AcsSdkReference>false</AcsSdkReference>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySqlConnector" Version="2.4.0" />
+  </ItemGroup>
+
+</Project>

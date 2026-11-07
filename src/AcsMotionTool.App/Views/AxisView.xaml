@@ -1,0 +1,800 @@
+<UserControl x:Class="AcsMotionTool.App.Views.AxisView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:infra="clr-namespace:AcsMotionTool.App.Infrastructure"
+             xmlns:core="clr-namespace:AcsMotionTool.Core;assembly=AcsMotionTool.Core">
+
+    <Grid Margin="18,16,18,14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- ===================== 页头 ===================== -->
+        <Grid Grid.Row="0">
+            <StackPanel>
+                <TextBlock Style="{StaticResource PageTitle}" Text="轴控制" />
+                <TextBlock Style="{StaticResource PageSubtitle}">
+                    <Run Text="正在监视 " />
+                    <Run Text="{Binding Axes.Count, Mode=OneWay}" />
+                    <Run Text=" 个轴 · 当前 " />
+                    <Run Text="{Binding SelectedAxisName, Mode=OneWay}" />
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Style="{StaticResource ButtonSmall}" Content="全部使能"
+                        Command="{Binding EnableAllCommand}" Margin="0,0,8,0" />
+                <Button Style="{StaticResource ButtonSmall}" Content="全部停止"
+                        Command="{Binding StopAllCommand}" />
+            </StackPanel>
+        </Grid>
+
+        <!-- ===================== 轴卡片（切换当前轴） ===================== -->
+        <ListBox Grid.Row="1" Margin="0,14,0,14"
+                 ItemsSource="{Binding Axes}" SelectedItem="{Binding SelectedAxis}"
+                 Background="Transparent" BorderThickness="0" Padding="0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                 ItemContainerStyle="{StaticResource AxisCardItem}"
+                 AutomationProperties.AutomationId="AxisCards">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="238">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextBrush}" />
+                                <TextBlock Text="{Binding Index, StringFormat={}#{0}}" Margin="6,0,0,0"
+                                           FontSize="11" FontFamily="{StaticResource MonoFont}"
+                                           Foreground="{StaticResource Text3Brush}" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Ellipse Width="7" Height="7" VerticalAlignment="Center">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="Fill" Value="{StaticResource Text3Brush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasAlarm}" Value="True">
+                                                    <Setter Property="Fill" Value="{StaticResource DangerBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsMoving}" Value="True">
+                                                    <Setter Property="Fill" Value="{StaticResource BrandBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                                    <Setter Property="Fill" Value="{StaticResource OkBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock Text="{Binding EnabledText}" Margin="5,0,0,0" FontSize="11.5"
+                                           Foreground="{StaticResource Text2Brush}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <TextBlock Text="{Binding PositionText}" FontFamily="{StaticResource MonoFont}"
+                                       FontSize="22" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextBrush}" />
+                            <TextBlock Text="mm" FontSize="11" Foreground="{StaticResource Text3Brush}"
+                                       VerticalAlignment="Bottom" Margin="4,0,0,3" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                            <Border Style="{StaticResource Chip}" Margin="0,0,6,0"
+                                    Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock Text="{Binding InPositionText}" FontSize="11.5">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{StaticResource Text3Brush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMoving}" Value="True">
+                                                    <Setter Property="Foreground" Value="{StaticResource BrandDarkBrush}" />
+                                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+
+                            <Border Style="{StaticResource ChipDanger}" Margin="0,0,6,0"
+                                    Visibility="{Binding AlarmText, Converter={StaticResource NonEmptyStringToVisibilityConverter}}">
+                                <TextBlock Text="{Binding AlarmText}" FontSize="11.5"
+                                           Foreground="{StaticResource DangerBrush}" />
+                            </Border>
+
+                            <Border Style="{StaticResource Chip}"
+                                    Visibility="{Binding MotionCodeText, Converter={StaticResource NonEmptyStringToVisibilityConverter}}">
+                                <TextBlock Text="{Binding MotionCodeText}" FontSize="11.5"
+                                           Foreground="{StaticResource Text3Brush}" />
+                            </Border>
+
+                            <Border Style="{StaticResource ChipWarn}"
+                                    Visibility="{Binding LimitText, Converter={StaticResource NonEmptyStringToVisibilityConverter}}">
+                                <TextBlock Text="{Binding LimitText}" FontSize="11.5"
+                                           Foreground="{StaticResource WarnBrush}" />
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- ===================== 操作台 + 轴状态 ===================== -->
+        <Grid Grid.Row="2" infra:GridLayoutBehavior.PersistKey="Axis">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.7*" MinWidth="520" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="1*" MinWidth="320" />
+            </Grid.ColumnDefinitions>
+
+            <!-- 左列：操作台 + 全部轴状态 -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="12" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- 操作台 -->
+                <Border Grid.Row="0" Style="{StaticResource Card}">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Style="{StaticResource CardHeader}">
+                            <Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="操作台" />
+                                    <TextBlock Style="{StaticResource Muted}" Text="{Binding SelectedAxisName}"
+                                               Margin="8,0,0,0" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Border Style="{StaticResource ChipOk}" Margin="0,0,6,0"
+                                            Visibility="{Binding SelectedAxis.IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock Text="已使能" FontSize="11.5" Foreground="{StaticResource OkBrush}" />
+                                    </Border>
+                                    <Border Style="{StaticResource ChipBrand}"
+                                            Visibility="{Binding SelectedAxis.IsMoving, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock Text="运动中" FontSize="11.5" Foreground="{StaticResource BrandDarkBrush}" />
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- 常驻动作条 -->
+                        <Border DockPanel.Dock="Bottom" BorderBrush="{StaticResource LineBrush}"
+                                BorderThickness="0,1,0,0" Padding="14,10">
+                            <Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="使能" Style="{StaticResource ButtonPrimary}"
+                                            Command="{Binding EnableCommand}" Margin="0,0,8,0" />
+                                    <Button Content="下使能" Command="{Binding DisableCommand}" Margin="0,0,8,0" />
+                                    <Button Content="清除故障" Command="{Binding ClearFaultCommand}" Margin="0,0,8,0" />
+                                    <Button Content="停止" Command="{Binding StopCommand}" MinWidth="80" />
+                                </StackPanel>
+                                <Button HorizontalAlignment="Right" Content="急停本轴"
+                                        Style="{StaticResource ButtonDangerOutline}"
+                                        Command="{Binding EmergencyStopCommand}" MinWidth="96" />
+                            </Grid>
+                        </Border>
+
+                        <TabControl Style="{StaticResource SegTabControl}" Margin="12,10,12,10">
+
+                            <TabItem Header="手动" Style="{StaticResource SegTabItem}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 模式 / 步长 / 三组速度 -->
+                                    <Grid Grid.Row="0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Style="{StaticResource SegRadioGroup}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <RadioButton Style="{StaticResource SegRadio}" Content="步进" GroupName="PadMode"
+                                                                 IsChecked="{Binding PadModeIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=0}" />
+                                                    <RadioButton Style="{StaticResource SegRadio}" Content="连续" GroupName="PadMode"
+                                                                 IsChecked="{Binding PadModeIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=1}" />
+                                                    <RadioButton Style="{StaticResource SegRadio}" Content="绝对" GroupName="PadMode"
+                                                                 IsChecked="{Binding PadModeIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=2}" />
+                                                </StackPanel>
+                                            </Border>
+                                            <StackPanel Margin="14,0,0,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="步长 (mm/°)" />
+                                                <TextBox Width="110" Margin="0,4,0,0"
+                                                         Text="{Binding PadStep, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="XY 速度" />
+                                                <TextBox Width="92" Margin="0,4,0,0"
+                                                         Text="{Binding JogVelocity, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="Z 速度" />
+                                                <TextBox Width="92" Margin="0,4,0,0"
+                                                         Text="{Binding JogVelocityZ, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="R 速度" />
+                                                <TextBox Width="92" Margin="0,4,0,0"
+                                                         Text="{Binding JogVelocityR, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <!-- 九宫格 + 右侧信息 -->
+                                    <Grid Grid.Row="1" Margin="0,14,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="72" />
+                                                <RowDefinition Height="8" />
+                                                <RowDefinition Height="72" />
+                                                <RowDefinition Height="8" />
+                                                <RowDefinition Height="72" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="106" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="106" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="106" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- 左上：R 逆时针 -->
+                                            <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource ButtonSecondary}" Padding="4,2" Height="72"
+                                                    IsEnabled="{Binding PadGridEnabled}" ToolTip="R 轴逆时针（轴 3）"
+                                                    AutomationProperties.AutomationId="PadRCCW"
+                                                    infra:HoldCommandBehavior.PressCommand="{Binding PadPressCommand}"
+                                                    infra:HoldCommandBehavior.PressParameter="3:-"
+                                                    infra:HoldCommandBehavior.ReleaseCommand="{Binding PadReleaseCommand}"
+                                                    infra:HoldCommandBehavior.ReleaseParameter="3">
+                                                <StackPanel>
+                                                    <TextBlock Text="R−" FontSize="17" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="逆时针" FontSize="10" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource Text3Brush}" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- 上中：Y 正向 -->
+                                            <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource ButtonSecondary}" Padding="4,2" Height="72"
+                                                    IsEnabled="{Binding PadGridEnabled}" ToolTip="Y 轴正向（轴 1）"
+                                                    AutomationProperties.AutomationId="PadYPlus"
+                                                    infra:HoldCommandBehavior.PressCommand="{Binding PadPressCommand}"
+                                                    infra:HoldCommandBehavior.PressParameter="1:+"
+                                                    infra:HoldCommandBehavior.ReleaseCommand="{Binding PadReleaseCommand}"
+                                                    infra:HoldCommandBehavior.ReleaseParameter="1">
+                                                <StackPanel>
+                                                    <TextBlock Text="↑" FontSize="18" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Y 正向" FontSize="10" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource Text3Brush}" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- 右上：Z 上升 -->
+                                            <Button Grid.Row="0" Grid.Column="4" Style="{StaticResource ButtonSecondary}" Padding="4,2" Height="72"
+                                                    IsEnabled="{Binding PadGridEnabled}" ToolTip="Z 轴上升（轴 2）"
+                                                    AutomationProperties.AutomationId="PadZUp"
+                                                    infra:HoldCommandBehavior.PressCommand="{Binding PadPressCommand}"
+                                                    infra:HoldCommandBehavior.PressParameter="2:+"
+                                                    infra:HoldCommandBehavior.ReleaseCommand="{Binding PadReleaseCommand}"
+                                                    infra:HoldCommandBehavior.ReleaseParameter="2">
+                                                <StackPanel>
+                                                    <TextBlock Text="Z+" FontSize="17" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="上升" FontSize="10" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource Text3Brush}" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- 左中：X 负向 -->
+                                            <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource ButtonSecondary}" Padding="4,2" Height="72"
+                                                    IsEnabled="{Binding PadGridEnabled}" ToolTip="X 轴负向（轴 0）"
+                                                    AutomationProperties.AutomationId="PadXMinus"
+                                                    infra:HoldCommandBehavior.PressCommand="{Binding PadPressCommand}"
+                                                    infra:HoldCommandBehavior.PressParameter="0:-"
+                                                    infra:HoldCommandBehavior.ReleaseCommand="{Binding PadReleaseCommand}"
+                                                    infra:HoldCommandBehavior.ReleaseParameter="0">
+                                                <StackPanel>
+                                                    <TextBlock Text="←" FontSize="18" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="X 负向" FontSize="10" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource Text3Brush}" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- 正中：停止全部 -->
+                                            <Button Grid.Row="2" Grid.Column="2" Style="{StaticResource ButtonDangerOutline}" Padding="4,2" Height="72"
+                                                    ToolTip="停止 X/Y/Z/R 四个轴" AutomationProperties.AutomationId="PadStopAll"
+                                                    Command="{Binding StopAllPadJogsCommand}">
+                                                <StackPanel>
+                                                    <TextBlock Text="■" FontSize="16" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="停止全部" FontSize="10" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource DangerBrush}" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- 右中：X 正向 -->
+                                            <Button Grid.Row="2" Grid.Column="4" Style="{StaticResource ButtonSecondary}" Padding="4,2" Height="72"
+                                                    IsEnabled="{Binding PadGridEnabled}" ToolTip="X 轴正向（轴 0）"
+                                                    AutomationProperties.AutomationId="PadXPlus"
+                                                    infra:HoldCommandBehavior.PressCommand="{Binding PadPressCommand}"
+                                                    infra:HoldCommandBehavior.PressParameter="0:+"
+                                                    infra:HoldCommandBehavior.ReleaseCommand="{Binding PadReleaseCommand}"
+                                                    infra:HoldCommandBehavior.ReleaseParameter="0">
+                                                <StackPanel>
+                                                    <TextBlock Text="→" FontSize="18" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="X 正向" FontSize="10" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource Text3Brush}" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- 左下：R 顺时针 -->
+                                            <Button Grid.Row="4" Grid.Column="0" Style="{StaticResource ButtonSecondary}" Padding="4,2" Height="72"
+                                                    IsEnabled="{Binding PadGridEnabled}" ToolTip="R 轴顺时针（轴 3）"
+                                                    AutomationProperties.AutomationId="PadRCW"
+                                                    infra:HoldCommandBehavior.PressCommand="{Binding PadPressCommand}"
+                                                    infra:HoldCommandBehavior.PressParameter="3:+"
+                                                    infra:HoldCommandBehavior.ReleaseCommand="{Binding PadReleaseCommand}"
+                                                    infra:HoldCommandBehavior.ReleaseParameter="3">
+                                                <StackPanel>
+                                                    <TextBlock Text="R+" FontSize="17" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="顺时针" FontSize="10" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource Text3Brush}" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- 下中：Y 负向 -->
+                                            <Button Grid.Row="4" Grid.Column="2" Style="{StaticResource ButtonSecondary}" Padding="4,2" Height="72"
+                                                    IsEnabled="{Binding PadGridEnabled}" ToolTip="Y 轴负向（轴 1）"
+                                                    AutomationProperties.AutomationId="PadYMinus"
+                                                    infra:HoldCommandBehavior.PressCommand="{Binding PadPressCommand}"
+                                                    infra:HoldCommandBehavior.PressParameter="1:-"
+                                                    infra:HoldCommandBehavior.ReleaseCommand="{Binding PadReleaseCommand}"
+                                                    infra:HoldCommandBehavior.ReleaseParameter="1">
+                                                <StackPanel>
+                                                    <TextBlock Text="↓" FontSize="18" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="Y 负向" FontSize="10" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource Text3Brush}" />
+                                                </StackPanel>
+                                            </Button>
+
+                                            <!-- 右下：Z 下降 -->
+                                            <Button Grid.Row="4" Grid.Column="4" Style="{StaticResource ButtonSecondary}" Padding="4,2" Height="72"
+                                                    IsEnabled="{Binding PadGridEnabled}" ToolTip="Z 轴下降（轴 2）"
+                                                    AutomationProperties.AutomationId="PadZDown"
+                                                    infra:HoldCommandBehavior.PressCommand="{Binding PadPressCommand}"
+                                                    infra:HoldCommandBehavior.PressParameter="2:-"
+                                                    infra:HoldCommandBehavior.ReleaseCommand="{Binding PadReleaseCommand}"
+                                                    infra:HoldCommandBehavior.ReleaseParameter="2">
+                                                <StackPanel>
+                                                    <TextBlock Text="Z−" FontSize="17" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="下降" FontSize="10" HorizontalAlignment="Center"
+                                                               Foreground="{StaticResource Text3Brush}" />
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+
+                                        <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                                            <!-- 实时坐标 -->
+                                            <Border Background="{StaticResource Surface2Brush}" BorderBrush="{StaticResource LineBrush}"
+                                                    BorderThickness="1" CornerRadius="8" Padding="12,10">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="26" />
+                                                        <RowDefinition Height="26" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource Muted}" Text="X"
+                                                               VerticalAlignment="Center" />
+                                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding PadXPosition}"
+                                                               Style="{StaticResource MonoSmall}" HorizontalAlignment="Right" Margin="0,0,18,0" />
+                                                    <TextBlock Grid.Row="0" Grid.Column="2" Style="{StaticResource Muted}" Text="Y"
+                                                               VerticalAlignment="Center" />
+                                                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding PadYPosition}"
+                                                               Style="{StaticResource MonoSmall}" HorizontalAlignment="Right" />
+
+                                                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource Muted}" Text="Z"
+                                                               VerticalAlignment="Center" />
+                                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PadZPosition}"
+                                                               Style="{StaticResource MonoSmall}" HorizontalAlignment="Right" Margin="0,0,18,0" />
+                                                    <TextBlock Grid.Row="1" Grid.Column="2" Style="{StaticResource Muted}" Text="R"
+                                                               VerticalAlignment="Center" />
+                                                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding PadRPosition}"
+                                                               Style="{StaticResource MonoSmall}" HorizontalAlignment="Right" />
+                                                </Grid>
+                                            </Border>
+
+                                            <!-- 绝对模式：X/Y 一起走 -->
+                                            <StackPanel Margin="0,12,0,0"
+                                                        Visibility="{Binding IsPadAbsMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <TextBlock Style="{StaticResource CardTitle}" Text="绝对位置（X/Y 一起走）" />
+                                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                                    <StackPanel Margin="0,0,10,0">
+                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="X 目标" />
+                                                        <TextBox Width="110" Margin="0,4,0,0"
+                                                                 Text="{Binding TargetX, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </StackPanel>
+                                                    <StackPanel Margin="0,0,10,0">
+                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="Y 目标" />
+                                                        <TextBox Width="110" Margin="0,4,0,0"
+                                                                 Text="{Binding TargetY, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </StackPanel>
+                                                    <StackPanel>
+                                                        <TextBlock Style="{StaticResource FieldLabel}" Text=" " />
+                                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                                            <Button Content="取当前" Command="{Binding TakeCurrentXyCommand}"
+                                                                    Style="{StaticResource ButtonSmall}" Margin="0,0,6,0" />
+                                                            <Button Content="移动到" Command="{Binding MoveXyCommand}"
+                                                                    Style="{StaticResource ButtonPrimary}" MinWidth="86" Height="32" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <!-- 单轴定位：跟随上方选中的轴 -->
+                                            <StackPanel Margin="0,12,0,0">
+                                                <TextBlock Style="{StaticResource CardTitle}" Text="{Binding SingleAxisTitle}" />
+                                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                                    <StackPanel Margin="0,0,10,0">
+                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="目标位置" />
+                                                        <TextBox Width="120" Margin="0,4,0,0"
+                                                                 Text="{Binding SingleAxisTarget, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </StackPanel>
+                                                    <StackPanel>
+                                                        <TextBlock Style="{StaticResource FieldLabel}" Text=" " />
+                                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                                            <Button Content="取当前" Command="{Binding TakeCurrentSingleAxisCommand}"
+                                                                    Style="{StaticResource ButtonSmall}" Margin="0,0,6,0" />
+                                                            <Button Content="移动" Command="{Binding MoveSingleAxisCommand}"
+                                                                    Style="{StaticResource ButtonPrimary}" MinWidth="76" Height="32" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Grid.Row="2" Style="{StaticResource HintText}" Margin="0,12,0,0"
+                                               Text="步进：点一下走一个步长；连续：按住走、松开停；绝对：九宫格禁用，填 X/Y 后两轴一起走。" />
+                                </Grid>
+                            </TabItem>
+
+
+                            <TabItem Header="回零" Style="{StaticResource SegTabItem}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource FieldLabel}" Text="回零方式" />
+                                    <Border Style="{StaticResource SegRadioGroup}" Margin="0,6,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <RadioButton Style="{StaticResource SegRadio}" Content="控制器程序"
+                                                         GroupName="HomeMode"
+                                                         IsChecked="{Binding HomingModeIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=0}" />
+                                            <RadioButton Style="{StaticResource SegRadio}" Content="生成 HOME 指令"
+                                                         GroupName="HomeMode"
+                                                         IsChecked="{Binding HomingModeIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=1}" />
+                                            <RadioButton Style="{StaticResource SegRadio}" Content="软件置零"
+                                                         GroupName="HomeMode"
+                                                         IsChecked="{Binding HomingModeIndex, Converter={StaticResource IntEqualsConverter}, ConverterParameter=2}" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <WrapPanel Margin="0,12,0,0">
+                                        <StackPanel Margin="0,0,10,0">
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="缓冲区号" />
+                                            <TextBox Width="72" Margin="0,4,0,0"
+                                                     Text="{Binding HomeBufferIndex, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                        <StackPanel Margin="0,0,10,0">
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="方式号" />
+                                            <TextBox Width="72" Margin="0,4,0,0"
+                                                     Text="{Binding HomingMethod, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                        <StackPanel Margin="0,0,10,0">
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="回零速度" />
+                                            <TextBox Width="92" Margin="0,4,0,0"
+                                                     Text="{Binding HomingVelocity, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                        <StackPanel Margin="0,0,10,0">
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="最大距离" />
+                                            <TextBox Width="108" Margin="0,4,0,0"
+                                                     Text="{Binding HomingMaxDistance, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource FieldLabel}" Text="原点偏移" />
+                                            <TextBox Width="92" Margin="0,4,0,0"
+                                                     Text="{Binding HomingOffsetText, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                    </WrapPanel>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                                        <Button Style="{StaticResource ButtonPrimary}" Content="开始回零" Width="120"
+                                                Command="{Binding HomeCommand}" />
+                                        <Button Content="停止回零" Command="{Binding StopHomeCommand}" Margin="8,0,0,0" />
+                                        <Button Content="写入回零程序" Command="{Binding WriteHomeProgramCommand}"
+                                                Margin="8,0,0,0" MinWidth="112" />
+                                    </StackPanel>
+
+                                    <TextBlock Style="{StaticResource HintWarnText}" Margin="0,12,0,0"
+                                               Text="模拟器没有原点开关与索引脉冲，硬件回零会一直找原点；模拟器请选“软件置零”。" />
+                                </StackPanel>
+                            </TabItem>
+
+                            <TabItem Header="设置" Style="{StaticResource SegTabItem}">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="300">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource CardTitle}" Text="轴名称与软限位" />
+                                        <WrapPanel Margin="0,8,0,0">
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="名称" />
+                                                <TextBox Width="132" Margin="0,4,0,0"
+                                                         Text="{Binding AxisNameText, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="软限位下限" />
+                                                <TextBox Width="110" Margin="0,4,0,0"
+                                                         Text="{Binding SoftLimitMinText, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="软限位上限" />
+                                                <TextBox Width="110" Margin="0,4,0,0"
+                                                         Text="{Binding SoftLimitMaxText, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text=" " />
+                                                <Button Content="应用" Command="{Binding ApplyAxisIdentityCommand}"
+                                                        Style="{StaticResource ButtonPrimary}" Margin="0,4,0,0" MinWidth="76" />
+                                            </StackPanel>
+                                        </WrapPanel>
+
+                                        <TextBlock Style="{StaticResource HintText}" Margin="0,8,0,0"
+                                                   Text="留空表示不检查；点“应用”立即生效，并按设置自动写入数据库。" />
+
+                                        <Border Height="1" Background="{StaticResource LineBrush}" Margin="0,14" />
+
+                                        <TextBlock Style="{StaticResource CardTitle}" Text="软限位数据库" />
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <Button Content="保存所有轴到数据库"
+                                                    Command="{Binding SaveSoftLimitsToDbCommand}" MinWidth="152" />
+                                            <Button Content="从数据库加载" Command="{Binding LoadSoftLimitsFromDbCommand}"
+                                                    Margin="8,0,0,0" MinWidth="120" />
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding SoftLimitDbStatus}" FontSize="11.5"
+                                                   Foreground="{StaticResource InfoBrush}" Margin="0,8,0,0" TextWrapping="Wrap" />
+
+                                        <Border Height="1" Background="{StaticResource LineBrush}" Margin="0,14" />
+
+                                        <TextBlock Style="{StaticResource CardTitle}" Text="位置设定" />
+                                        <WrapPanel Margin="0,8,0,0">
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="位置值" />
+                                                <TextBox Width="120" Margin="0,4,0,0"
+                                                         Text="{Binding SetPositionValue, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,0">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="写入对象" />
+                                                <Border Style="{StaticResource SegRadioGroup}" Margin="0,4,0,0" Height="32">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <RadioButton Style="{StaticResource SegRadio}" Content="编码器 FPOS"
+                                                                     GroupName="SetPosMode"
+                                                                     IsChecked="{Binding SetPositionMode, Converter={StaticResource IntEqualsConverter}, ConverterParameter=0}" />
+                                                        <RadioButton Style="{StaticResource SegRadio}" Content="命令 RPOS"
+                                                                     GroupName="SetPosMode"
+                                                                     IsChecked="{Binding SetPositionMode, Converter={StaticResource IntEqualsConverter}, ConverterParameter=1}" />
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text=" " />
+                                                <Button Content="设定" Command="{Binding SetPositionCommand}"
+                                                        Style="{StaticResource ButtonSmall}" Margin="0,4,0,0" MinWidth="70" Height="32" />
+                                            </StackPanel>
+                                        </WrapPanel>
+
+                                        <Border Height="1" Background="{StaticResource LineBrush}" Margin="0,14" />
+
+                                        <TextBlock Style="{StaticResource CardTitle}" Text="运动参数（控制器内）" />
+                                        <WrapPanel Margin="0,8,0,0">
+                                            <StackPanel Margin="0,0,10,10">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="速度" />
+                                                <TextBox Width="96" Margin="0,4,0,0"
+                                                         Text="{Binding ParamVelocity, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,10">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="Jerk" />
+                                                <TextBox Width="96" Margin="0,4,0,0"
+                                                         Text="{Binding ParamJerk, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,10">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="加速度" />
+                                                <TextBox Width="96" Margin="0,4,0,0"
+                                                         Text="{Binding ParamAcceleration, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,10">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="减速度" />
+                                                <TextBox Width="96" Margin="0,4,0,0"
+                                                         Text="{Binding ParamDeceleration, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,10,10">
+                                                <TextBlock Style="{StaticResource FieldLabel}" Text="急停减速度" />
+                                                <TextBox Width="96" Margin="0,4,0,0"
+                                                         Text="{Binding ParamKillDeceleration, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </WrapPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="读取参数" Command="{Binding ReadParametersCommand}" />
+                                            <Button Content="写入参数" Command="{Binding WriteParametersCommand}" Margin="8,0,0,0" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </TabItem>
+                        </TabControl>
+                    </DockPanel>
+                </Border>
+
+                <!-- 最近日志 -->
+                <Border Grid.Row="2" Style="{StaticResource Card}">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Style="{StaticResource CardHeader}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource CardTitle}" Text="最近日志" />
+                                <TextBlock Style="{StaticResource Muted}" Text="最新在前 · 完整日志见左侧「日志」"
+                                           Margin="8,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        <ListBox ItemsSource="{Binding RecentLogs}" Background="Transparent" BorderThickness="0"
+                                 Padding="10,6" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="IsHitTestVisible" Value="False" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <ContentPresenter />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Text}" FontFamily="{StaticResource MonoFont}"
+                                               FontSize="11.5" Margin="4,3" TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding Text}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{StaticResource Text3Brush}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Level}" Value="{x:Static core:AcsLogLevel.Warn}">
+                                                        <Setter Property="Foreground" Value="{StaticResource WarnBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Level}" Value="{x:Static core:AcsLogLevel.Error}">
+                                                        <Setter Property="Foreground" Value="{StaticResource DangerBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- 分隔条 -->
+            <GridSplitter Grid.Column="1" Width="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          ResizeBehavior="PreviousAndNext" ResizeDirection="Columns"
+                          Background="Transparent" ShowsPreview="False" Cursor="SizeWE"
+                          AutomationProperties.AutomationId="Splitter_Axis" />
+
+            <!-- 右列：轴状态 -->
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <DockPanel>
+                    <Border DockPanel.Dock="Top" Style="{StaticResource CardHeader}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource CardTitle}" Text="轴状态" />
+                            <TextBlock Style="{StaticResource Muted}" Text="{Binding SelectedAxis.Name}"
+                                       Margin="8,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="14">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource Muted}" Text="当前位置" />
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                <TextBlock Text="{Binding SelectedAxis.PositionText}"
+                                           FontFamily="{StaticResource MonoFont}" FontSize="30"
+                                           FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                                <TextBlock Text="mm" FontSize="11" Foreground="{StaticResource Text3Brush}"
+                                           VerticalAlignment="Bottom" Margin="5,0,0,6" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <Border Style="{StaticResource ChipOk}" Margin="0,0,6,0"
+                                        Visibility="{Binding SelectedAxis.IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="已使能" FontSize="11.5" Foreground="{StaticResource OkBrush}" />
+                                </Border>
+                                <Border Style="{StaticResource Chip}" Margin="0,0,6,0"
+                                        Visibility="{Binding SelectedAxis.IsEnabled, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                                    <TextBlock Text="未使能" FontSize="11.5" Foreground="{StaticResource Text3Brush}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipDanger}"
+                                        Visibility="{Binding SelectedAxis.HasAlarm, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding SelectedAxis.AlarmText}" FontSize="11.5"
+                                               Foreground="{StaticResource DangerBrush}" />
+                                </Border>
+                            </StackPanel>
+
+                            <Border Height="1" Background="{StaticResource LineBrush}" Margin="0,14" />
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="26" />
+                                    <RowDefinition Height="26" />
+                                    <RowDefinition Height="26" />
+                                    <RowDefinition Height="26" />
+                                    <RowDefinition Height="26" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Style="{StaticResource Muted}" Text="命令位置" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedAxis.CommandPositionText}"
+                                           Style="{StaticResource MonoSmall}" />
+
+                                <TextBlock Grid.Row="1" Style="{StaticResource Muted}" Text="目标位置" />
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedAxis.TargetPositionText}"
+                                           Style="{StaticResource MonoSmall}" />
+
+                                <TextBlock Grid.Row="2" Style="{StaticResource Muted}" Text="当前速度" />
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedAxis.VelocityText}"
+                                           Style="{StaticResource MonoSmall}" />
+
+                                <TextBlock Grid.Row="3" Style="{StaticResource Muted}" Text="限位" />
+                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedAxis.LimitText}"
+                                           Style="{StaticResource MonoSmall}" Foreground="{StaticResource WarnBrush}" />
+
+                                <TextBlock Grid.Row="4" Style="{StaticResource Muted}" Text="终止码" />
+                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedAxis.MotionCodeText}"
+                                           Style="{StaticResource MonoSmall}" Foreground="{StaticResource Text3Brush}" />
+                            </Grid>
+
+                            <TextBlock Text="{Binding SelectedAxis.MotionCodeDetail}" Style="{StaticResource HintText}"
+                                       Margin="0,10,0,0" />
+
+                            <Border Height="1" Background="{StaticResource LineBrush}" Margin="0,14" />
+
+                            <TextBlock Style="{StaticResource CardTitle}" Text="提示" />
+                            <TextBlock Style="{StaticResource HintText}" Margin="0,8,0,0"
+                                       Text="急停按钮常驻顶栏，任何时候都可点击；单轴停止只影响当前选中的轴。" />
+                            <TextBlock Style="{StaticResource HintText}" Margin="0,8,0,0"
+                                       Text="5003 等 5000~5008 终止码属于正常停止，不是故障。" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>AcsMotionTool</AssemblyName>
+    <RootNamespace>AcsMotionTool.App</RootNamespace>
+    <ApplicationIcon />
+    <Description>ACS(SPiiPlus)运动控制调试工具</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AcsMotionTool.Core\AcsMotionTool.Core.csproj" />
+    <ProjectReference Include="..\AcsMotionTool.Data\AcsMotionTool.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HandyControl" Version="3.5.1" />
+  </ItemGroup>
+
+</Project>
