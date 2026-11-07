@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# ---- 本项目：设计过程资料不进代码库 ----
+# 界面方案/截图/预览稿（保留在本地磁盘，需要时再单独归档）
+docs/ui-redesign/
+screenshots/
